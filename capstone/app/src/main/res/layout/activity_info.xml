@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/topText"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:fontFamily="sans-serif"
+            android:textSize="22dp"
+            android:paddingTop="10dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            />
+        <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@+id/toolbar_layer"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:textColor="#CC0033"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:fontFamily="sans-serif"
+            android:textColor="#000203"
+            android:textSize="19dp" />
+
+
+    </LinearLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
