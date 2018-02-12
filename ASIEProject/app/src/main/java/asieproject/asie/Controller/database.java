@@ -67,7 +67,6 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                                 mJsonObjectVector.add(response.getJSONObject(i));
                             }
                             parseJson();
-                            Singleton.get(context).SetCategory(mMainCategoryVector);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -112,12 +111,13 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                 CategoryClass c;
                 if (parent_id.length() == 0) {
                     c = new CategoryClass(id, parent_id, name, mCategoryImages[i]);
-                    mMainCategoryVector.add(c);
+                    Singleton.get(mContext).AddCategory(c);
                 } else {
                     c = new CategoryClass(id, parent_id, name);
-                    mSubCategoryVector.add(c);
+                    Singleton.get(mContext).AddSubCategory(c);
                 }
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
