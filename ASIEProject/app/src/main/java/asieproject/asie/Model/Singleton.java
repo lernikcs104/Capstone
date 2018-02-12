@@ -12,7 +12,7 @@ import java.util.Vector;
 
 public class Singleton {
     private final String TAG = Singleton.class.getSimpleName();
-    private ArrayList<CategoryClass> mCategoryList;
+    private ArrayList<CategoryClass> mCategoryList = new ArrayList<CategoryClass>();
     private Vector<CategoryClass> mMainCategoryVector = new Vector<CategoryClass>();
     private Vector<CategoryClass> mSubCategoryVector = new Vector<CategoryClass>();
     private static Singleton singleton;
@@ -34,7 +34,9 @@ public class Singleton {
     }
 
     public void AddCategory(CategoryClass c) {
-        mMainCategoryVector.add(c);
+
+//        mMainCategoryVector.add(c);
+        mCategoryList.add(c);
     }
 
     public void AddSubCategory(CategoryClass c) {
@@ -45,16 +47,23 @@ public class Singleton {
         mMainCategoryVector = c;
     }
 
-    public Vector<CategoryClass> GetCategory() {
-        return mMainCategoryVector;
+    public ArrayList<CategoryClass> GetCategory() {
+        return mCategoryList;
     }
 
     public void Print() {
-        Log.d(TAG, "!!!!!! size mainV" + mMainCategoryVector.size());
-        for (int i = 0; i < mMainCategoryVector.size(); ++i) {
-            Log.d(TAG, "......... id " + mMainCategoryVector.elementAt(i).getId());
-            Log.d(TAG, "......... name " + mMainCategoryVector.elementAt(i).getCategoryName());
-            Log.d(TAG, "......... parent_id " + mMainCategoryVector.elementAt(i).getParentId());
+        Log.d(TAG, "!!!!!! size mainV" + mCategoryList.size());
+        for (int i = 0; i < mCategoryList.size(); ++i) {
+            Log.d(TAG, "......... id " + mCategoryList.get(i).getId());
+            Log.d(TAG, "......... name " + mCategoryList.get(i).getCategoryName());
+            Log.d(TAG, "......... parent_id " + mCategoryList.get(i).getParentId());
         }
+
+//        Log.d(TAG, "!!!!!! size mainV" + mMainCategoryVector.size());
+//        for (int i = 0; i < mMainCategoryVector.size(); ++i) {
+//            Log.d(TAG, "......... id " + mMainCategoryVector.elementAt(i).getId());
+//            Log.d(TAG, "......... name " + mMainCategoryVector.elementAt(i).getCategoryName());
+//            Log.d(TAG, "......... parent_id " + mMainCategoryVector.elementAt(i).getParentId());
+//        }
     }
 }
