@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -28,11 +29,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 import asieproject.asie.Controller.database;
 import asieproject.asie.Model.CategoryClass;
 import asieproject.asie.Model.Singleton;
 import asieproject.asie.View.ListArrayAdapter;
+import asieproject.asie.Model.VolleyCallback;
 
 import static android.content.ContentValues.TAG;
 
@@ -47,6 +50,7 @@ public class MainActivityFragment extends Fragment {
     List<CategoryClass> categoryRow;
     ListArrayAdapter adapter;
     private Vector<JSONObject> mJsonObjectVector = new Vector<JSONObject>();
+    private Vector<CategoryClass> category = new Vector<CategoryClass>();
 
     public static final Integer[] mCategoryImages = { R.drawable.medicalrecords,
             R.drawable.healthcare, R.drawable.balance, R.drawable.charity,
@@ -79,15 +83,19 @@ public class MainActivityFragment extends Fragment {
         listView = (ListView) v.findViewById((R.id.list));
 
 //        db = new database(getActivity().getApplication());
-        ConnectDB();
-        Log.d(TAG, ".........................." + Singleton.get(getActivity().getApplicationContext()).GetCategory().size());
+        ConnectDB(new VolleyCallback() {
+            @Override
+            public void onSuccess(ArrayList<CategoryClass> result) {
+                Log.d(TAG, "***************************** result size" + result.size());
+                populateList();
+            }
+        });
         Singleton.get(getActivity().getApplicationContext()).Print();
-        populateList();
 
         return v;
     }
 
-    public void ConnectDB() {
+    public void ConnectDB(final VolleyCallback callback) {
         // initialize a new requestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -100,7 +108,7 @@ public class MainActivityFragment extends Fragment {
                                 mJsonObjectVector.add(response.getJSONObject(i));
                             }
                             parseJson();
-                            populateList();
+                            callback.onSuccess(Singleton.get(getActivity().getApplicationContext()).GetCategory());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -129,6 +137,8 @@ public class MainActivityFragment extends Fragment {
 
         //Remember to add it to our queue so it will actually start!
         requestQueue.add(jsArrayRequest);
+        requestQueue.start();
+
     }
 
     private void parseJson() {
@@ -153,16 +163,14 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-
     public void populateList() {
-        Vector<CategoryClass> mainCategory = new Vector<CategoryClass>();
+        ArrayList<CategoryClass> mainCategory = new ArrayList<CategoryClass>();
         mainCategory = Singleton.get(getActivity().getApplicationContext()).GetCategory();
-//        mainCategory = db.getMainCategoryVector();
         categoryRow = new ArrayList<CategoryClass>();
 
 //         populate each row
         for (int i=0; i<mainCategory.size(); ++i) {
-            categoryRow.add(mainCategory.elementAt(i));
+            categoryRow.add(mainCategory.get(i));
         }
 
         // populate the list view with category row
