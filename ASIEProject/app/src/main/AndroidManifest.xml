@@ -18,6 +18,9 @@
 
             </intent-filter>
         </activity>
+
+        <activity android:name=".SubCategoryActivity"
+            android:label="Subcategory List"/>
     </application>
 
 </manifest>
