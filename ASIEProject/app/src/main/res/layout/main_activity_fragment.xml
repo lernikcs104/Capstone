@@ -44,14 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_layer"/>
 
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/connect_db"-->
-        <!--android:text="@string/connect"-->
-        <!--android:background="@color/colorPrimaryDark"-->
-        <!--android:layout_marginTop="10dp"/>-->
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
