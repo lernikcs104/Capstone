@@ -1,6 +1,7 @@
 package asieproject.asie.Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import asieproject.asie.R;
 
@@ -15,6 +16,7 @@ public class CategoryClass implements Serializable {
     private String mCategoryParentId;
     private String mCategoryName;
     private Integer mCategoryImage;
+    private ArrayList<CategoryClass> mSubCategoryList;
 
     public CategoryClass() {
         super();
@@ -26,6 +28,7 @@ public class CategoryClass implements Serializable {
         this.mCategoryName = name;
         this.mCategoryParentId = parentId;
         this.mCategoryImage = image;
+        mSubCategoryList = new ArrayList<CategoryClass>();
     }
 
     public CategoryClass(String id, String parentId, String name) {
@@ -49,5 +52,13 @@ public class CategoryClass implements Serializable {
 
     public Integer getCategoryImage() {
         return mCategoryImage;
+    }
+
+    public void addSubCategory(CategoryClass c) {
+        mSubCategoryList.add(c);
+    }
+
+    public ArrayList<CategoryClass> getSubCategoryList() {
+        return mSubCategoryList;
     }
 }

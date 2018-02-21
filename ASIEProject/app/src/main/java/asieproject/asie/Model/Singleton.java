@@ -13,8 +13,7 @@ import java.util.Vector;
 public class Singleton {
     private final String TAG = Singleton.class.getSimpleName();
     private ArrayList<CategoryClass> mCategoryList = new ArrayList<CategoryClass>();
-    private Vector<CategoryClass> mMainCategoryVector = new Vector<CategoryClass>();
-    private Vector<CategoryClass> mSubCategoryVector = new Vector<CategoryClass>();
+    private ArrayList<CategoryClass> mSubCategoryList = new ArrayList<CategoryClass>();
     private static Singleton singleton;
     private Context mContext;
 
@@ -34,21 +33,19 @@ public class Singleton {
     }
 
     public void AddCategory(CategoryClass c) {
-
-//        mMainCategoryVector.add(c);
         mCategoryList.add(c);
     }
 
     public void AddSubCategory(CategoryClass c) {
-        mSubCategoryVector.add(c);
-    }
-
-    public void SetCategory(Vector<CategoryClass> c) {
-        mMainCategoryVector = c;
+        mSubCategoryList.add(c);
     }
 
     public ArrayList<CategoryClass> GetCategory() {
         return mCategoryList;
+    }
+
+    public ArrayList<CategoryClass> GetSubCategory() {
+        return mSubCategoryList;
     }
 
     public void Print() {
@@ -58,12 +55,5 @@ public class Singleton {
             Log.d(TAG, "......... name " + mCategoryList.get(i).getCategoryName());
             Log.d(TAG, "......... parent_id " + mCategoryList.get(i).getParentId());
         }
-
-//        Log.d(TAG, "!!!!!! size mainV" + mMainCategoryVector.size());
-//        for (int i = 0; i < mMainCategoryVector.size(); ++i) {
-//            Log.d(TAG, "......... id " + mMainCategoryVector.elementAt(i).getId());
-//            Log.d(TAG, "......... name " + mMainCategoryVector.elementAt(i).getCategoryName());
-//            Log.d(TAG, "......... parent_id " + mMainCategoryVector.elementAt(i).getParentId());
-//        }
     }
 }

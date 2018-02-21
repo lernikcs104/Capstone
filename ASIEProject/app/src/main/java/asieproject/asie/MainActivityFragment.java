@@ -1,5 +1,7 @@
 package asieproject.asie;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -43,19 +46,14 @@ import static android.content.ContentValues.TAG;
  * Created by CACTUS on 1/25/2018.
  */
 
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     database db;
+    VolleyCallback callback;
     private ListView listView;
     List<CategoryClass> categoryRow;
     ListArrayAdapter adapter;
-    private Vector<JSONObject> mJsonObjectVector = new Vector<JSONObject>();
-    private Vector<CategoryClass> category = new Vector<CategoryClass>();
-
-    public static final Integer[] mCategoryImages = { R.drawable.medicalrecords,
-            R.drawable.healthcare, R.drawable.balance, R.drawable.charity,
-            R.drawable.americanfootball, R.drawable.library, R.drawable.suitcase, R.drawable.team };
-    private final String dbUrlCategory = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
+    private String rowItemString;
 
     public MainActivityFragment() {}
 
@@ -73,94 +71,21 @@ public class MainActivityFragment extends Fragment {
         Log.d(TAG, "in onCreateView");
         View v = inflater.inflate(R.layout.main_activity_fragment, container, false);
 
-        // instantiating singleton
-        Singleton.get(getActivity().getApplicationContext()).Instantiate();
-
-        //creating toolbar to place logo
-//        Toolbar toolbar = (Toolbar) v.findViewById(R.id.my_toolbar);
-//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-
         listView = (ListView) v.findViewById((R.id.list));
 
-//        db = new database(getActivity().getApplication());
-        ConnectDB(new VolleyCallback() {
+        // instantiating singleton
+        Singleton.get(getActivity().getApplicationContext()).Instantiate();
+        // instantiate Volley callback
+        callback = new VolleyCallback() {
             @Override
             public void onSuccess(ArrayList<CategoryClass> result) {
-                Log.d(TAG, "***************************** result size" + result.size());
                 populateList();
-            }
-        });
-        Singleton.get(getActivity().getApplicationContext()).Print();
 
-        return v;
-    }
-
-    public void ConnectDB(final VolleyCallback callback) {
-        // initialize a new requestQueue instance
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        JsonArrayRequest jsArrayRequest = new JsonArrayRequest //make json object request
-                (Request.Method.GET, dbUrlCategory, null, new Response.Listener<JSONArray>() { //anonymous listener
-                    @Override
-                    public void onResponse(JSONArray response) { //the server response is a JSONArray containing the data
-                        try {
-                            for (int i = 0; i < response.length(); ++i) {
-                                mJsonObjectVector.add(response.getJSONObject(i));
-                            }
-                            parseJson();
-                            callback.onSuccess(Singleton.get(getActivity().getApplicationContext()).GetCategory());
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        //if you got no data back from the server, handle it somehow.
-
-                    }
-                })
-        {
-            @Override
-            public Map<String,String> getHeaders(){
-                HashMap<String, String> headers = new HashMap<String, String>();
-                String credentials = "asie"+":"+"fighton";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(),
-                        Base64.NO_WRAP);
-                headers.put("Authorization", auth);
-                return headers;
             }
         };
 
-        //Remember to add it to our queue so it will actually start!
-        requestQueue.add(jsArrayRequest);
-        requestQueue.start();
-
-    }
-
-    private void parseJson() {
-        try {
-            for (int i = 0; i < mJsonObjectVector.size(); ++i) {
-                String id = mJsonObjectVector.elementAt(i).getString("_id");
-                String name = mJsonObjectVector.elementAt(i).getString("name");
-                String parent_id = mJsonObjectVector.elementAt(i).getString("parent_id");
-
-                CategoryClass c;
-                if (parent_id.length() == 0) {
-                    c = new CategoryClass(id, parent_id, name, mCategoryImages[i]);
-                    Singleton.get(getActivity().getApplicationContext()).AddCategory(c);
-                } else {
-                    c = new CategoryClass(id, parent_id, name);
-                    Singleton.get(getActivity().getApplicationContext()).AddSubCategory(c);
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        db = new database(getActivity().getApplication(), callback);
+        return v;
     }
 
     public void populateList() {
@@ -168,7 +93,7 @@ public class MainActivityFragment extends Fragment {
         mainCategory = Singleton.get(getActivity().getApplicationContext()).GetCategory();
         categoryRow = new ArrayList<CategoryClass>();
 
-//         populate each row
+//      populate each row
         for (int i=0; i<mainCategory.size(); ++i) {
             categoryRow.add(mainCategory.get(i));
         }
@@ -176,6 +101,19 @@ public class MainActivityFragment extends Fragment {
         // populate the list view with category row
         adapter = new ListArrayAdapter(getActivity().getApplicationContext(), R.layout.list_item, categoryRow);
         listView.setAdapter(adapter);
-//        listView.setOnItemClickListener();
+        listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        rowItemString = categoryRow.get(position).toString();
+
+        Intent intent = new Intent(getActivity().getApplicationContext(), SubCategoryActivity.class);
+        intent.putExtra(MainActivity.EXTRA_CATEGORY, position);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+        getActivity().finish();
+        startActivity(intent);
+//        intent.putExtra(MainActivity.EXTRA_CATEGORY)
+
     }
 }

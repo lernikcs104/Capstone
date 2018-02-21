@@ -17,11 +17,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
 import asieproject.asie.Model.CategoryClass;
+import asieproject.asie.Model.VolleyCallback;
 import asieproject.asie.R;
 import asieproject.asie.Model.Singleton;
 
@@ -47,7 +50,8 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
     private Vector<CategoryClass> mSubCategoryVector;
     private Vector<JSONObject> mJsonObjectVector;
 
-    public database(final Context context) {
+    public database(final Context context, final VolleyCallback callback) {
+
         mContext = context;
 
         // instantiate category vector
@@ -67,6 +71,7 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                                 mJsonObjectVector.add(response.getJSONObject(i));
                             }
                             parseJson();
+                            callback.onSuccess(Singleton.get(mContext).GetCategory());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -97,14 +102,11 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
         requestQueue.add(jsArrayRequest);
     }
 
-    public Vector<CategoryClass> getSubCategoryVector() {
-        return mSubCategoryVector;
-    }
-
+    // to parse categories and subcategories from JSON obj
     private void parseJson() {
         try {
             for (int i = 0; i < mJsonObjectVector.size(); ++i) {
-                String id = mJsonObjectVector.elementAt(i).getString("_id");
+                String id =  mJsonObjectVector.elementAt(i).getString("_id").substring(9, 33);
                 String name = mJsonObjectVector.elementAt(i).getString("name");
                 String parent_id = mJsonObjectVector.elementAt(i).getString("parent_id");
 
@@ -118,8 +120,23 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                 }
             }
 
+            // add subcategory to its corresponding parent category
+            AssignSubCategory(Singleton.get(mContext).GetSubCategory());
+
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    // to assign each subcategory to its parent category
+    private void AssignSubCategory(ArrayList<CategoryClass> subCatList) {
+        for (int i=0; i<subCatList.size(); ++i) {
+            for (int j=0; j<Singleton.get(mContext).GetCategory().size(); ++j) {
+                if (subCatList.get(i).getParentId().equals(Singleton.get(mContext).GetCategory().get(j).getId())) {
+                    Singleton.get(mContext).GetCategory().get(j).addSubCategory(subCatList.get(i));
+                    break;
+                }
+            }
         }
     }
 }
