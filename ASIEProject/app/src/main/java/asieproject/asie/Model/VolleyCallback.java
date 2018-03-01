@@ -10,4 +10,5 @@ import java.util.Map;
 public interface VolleyCallback {
     void onSuccess(ArrayList<CategoryClass> result);
     void onSuccess(Map<String, String> result);
+    void onSuccessResource(ArrayList<ResourceClass> result);
 }

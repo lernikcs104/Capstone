@@ -36,6 +36,7 @@ import java.util.concurrent.ExecutionException;
 
 import asieproject.asie.Controller.database;
 import asieproject.asie.Model.CategoryClass;
+import asieproject.asie.Model.ResourceClass;
 import asieproject.asie.Model.Singleton;
 import asieproject.asie.View.ListArrayAdapter;
 import asieproject.asie.Model.VolleyCallback;
@@ -87,6 +88,9 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void onSuccess(Map<String, String> result) { }
+
+            @Override
+            public void onSuccessResource(ArrayList<ResourceClass> result) {}
         };
 
         if (! Singleton.get(getActivity().getApplicationContext()).IsCategorySet()){

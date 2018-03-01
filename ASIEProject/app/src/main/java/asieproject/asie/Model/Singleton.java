@@ -18,6 +18,7 @@ public class Singleton {
     private ArrayList<CategoryClass> mSubCategoryList = new ArrayList<CategoryClass>();
     private ArrayList<ResourceClass> mResourceList = new ArrayList<ResourceClass>();
     private Map<String, String> mCategoryToResourceMap = new HashMap<String, String>();
+    private Map<String, String> mSubcategoryToCategoryMap = new HashMap<String, String>();
     private boolean mIsCategorySet, mIsCategoryToResourceSet, mIsResourceSet = false;
 
 
@@ -57,13 +58,23 @@ public class Singleton {
 
     public ArrayList<CategoryClass> GetSubCategory() {return mSubCategoryList;}
 
+    public ArrayList<ResourceClass> GetResource() {return mResourceList;}
+
     public void AddToMap(String key, String value) {
         // key is Resource ID, value is Categories id
         mCategoryToResourceMap.put(key, value);
     }
 
+    public void SetSubcatToCategoryMap(String key, String value) {
+        mSubcategoryToCategoryMap.put(key, value);
+    }
+
     public Map<String, String> GetCategoryToResourceMap() {
         return mCategoryToResourceMap;
+    }
+
+    public Map<String, String> GetSubcategoryToCategoryMap() {
+        return mSubcategoryToCategoryMap;
     }
 
     public void SetCategoryFlag() {

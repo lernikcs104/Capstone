@@ -26,9 +26,11 @@ public class ResourceActivity extends FragmentActivity {
         // get data from intent
         Intent intent = getIntent();
         int listPos = (int)intent.getIntExtra(MainActivity.EXTRA_RESOURCE, 0);
+        int maincat_id = (int)intent.getIntExtra(MainActivity.EXTRA_CATEGORY, 0);
+        String subcat_id = (String) intent.getStringExtra(MainActivity.EXTRA_SUBCATEGORY_ID);
 
         if (f == null) {
-            f = ResourceFragment.newInstance(listPos);
+            f = ResourceFragment.newInstance(listPos, subcat_id, maincat_id);
         }
 
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

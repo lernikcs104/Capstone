@@ -14,32 +14,32 @@ public class ResourceClass implements Serializable {
     private String mResourceAddress;
     private String mResourcePhone;
     private String mResourceWeb;
+    private String mResourceEmail;
     private String mResourceDescription;
+    private String mSubcategoryId;
+    private String mMainCategoryId;
 
     public ResourceClass() {
         super();
     }
 
-    public ResourceClass(String id, String name, String address, String phone, String web, String desc) {
+    public ResourceClass(String id, String name, String address, String phone, String web, String email, String desc) {
         super();
         this.mResourceId = id;
         this.mResourceName = name;
         this.mResourceAddress = address;
         this.mResourcePhone = phone;
         this.mResourceWeb = web;
+        this.mResourceEmail = email;
         this.mResourceDescription = desc;
     }
 
-    public void SetResource(String id, String name, String address, String phone, String web, String desc) {
-        this.mResourceId = id;
-        this.mResourceName = name;
-        this.mResourceAddress = address;
-        this.mResourcePhone = phone;
-        this.mResourceWeb = web;
-        this.mResourceDescription = desc;
-    }
-
+    public String GetResourceId() { return mResourceId; }
     public String GetResourceName() {
         return mResourceName;
     }
+
+
+    public String getSubcategoryId() {return mSubcategoryId;}
+    public String getmMainCategoryId() {return mMainCategoryId;}
 }

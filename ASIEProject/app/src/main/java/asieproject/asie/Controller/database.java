@@ -20,10 +20,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import asieproject.asie.Model.CategoryClass;
+import asieproject.asie.Model.ResourceClass;
 import asieproject.asie.Model.VolleyCallback;
 import asieproject.asie.R;
 import asieproject.asie.Model.Singleton;
@@ -78,8 +80,9 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                             if (urlCode == URL_CODE_CAT) {
                                 callback.onSuccess(Singleton.get(mContext).GetCategory());
                             } else if (urlCode == URL_CODE_CAT_TO_RES) {
-                                storeToMap();
                                 callback.onSuccess(Singleton.get(mContext).GetCategoryToResourceMap());
+                            } else if (urlCode == URL_CODE_RES) {
+                                callback.onSuccessResource(Singleton.get(mContext).GetResource());
                             }
 
 
@@ -118,10 +121,12 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
         try {
             for (int i = 0; i < mJsonObjectVector.size(); ++i) {
                 if (requestCode == URL_CODE_CAT) {
+                    // parsing JSON
                     String id =  mJsonObjectVector.elementAt(i).getString("_id").substring(9, 33);
                     String name = mJsonObjectVector.elementAt(i).getString("name");
                     String parent_id = mJsonObjectVector.elementAt(i).getString("parent_id");
 
+                    // adding main category and sub category to their corresponding lists
                     CategoryClass c;
                     if (parent_id.length() == 0) {
                         c = new CategoryClass(id, parent_id, name, mCategoryImages[i]);
@@ -130,10 +135,27 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                         c = new CategoryClass(id, parent_id, name);
                         Singleton.get(mContext).AddSubCategory(c);
                     }
-                } else if (requestCode == URL_CODE_CAT_TO_RES) {
-                    String cat_id =  mJsonObjectVector.elementAt(i).getString("parent_id"); //.substring(9, 33);
-                    String res_id =  mJsonObjectVector.elementAt(i).getString("resource_id"); //.substring(9, 33);
+                }
+                else if (requestCode == URL_CODE_CAT_TO_RES) {
+                    // parse JSON
+                    String cat_id =  mJsonObjectVector.elementAt(i).getString("parent_id");
+                    String res_id =  mJsonObjectVector.elementAt(i).getString("resource_id");
+                    // add resource_id as key and category_id as value to a hashmap
                     Singleton.get(mContext).AddToMap(res_id, cat_id);
+                }
+                else if (requestCode == URL_CODE_RES) {
+                    // parse JSON
+                    String id =  mJsonObjectVector.elementAt(i).getString("_id").substring(9, 33);
+                    String name = mJsonObjectVector.elementAt(i).getString("name");
+                    String address = mJsonObjectVector.elementAt(i).getString("address");
+                    String phone = mJsonObjectVector.elementAt(i).getString("phone");
+                    String website = mJsonObjectVector.elementAt(i).getString("website");
+                    String email = mJsonObjectVector.elementAt(i).getString("email");
+                    String description = mJsonObjectVector.elementAt(i).getString("description");
+
+                    // add each resource to a resource list
+                    ResourceClass r = new ResourceClass(id, name, address, phone, website, email, description);
+                    Singleton.get(mContext).AddResource(r);
                 }
             }
 
@@ -141,16 +163,13 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                 // add subcategory to its corresponding parent category
                 AssignSubCategory(Singleton.get(mContext).GetSubCategory());
             } else if( requestCode == URL_CODE_RES) {
-
+                // assign each resource to its category
+                AssignResource(Singleton.get(mContext).GetResource());
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void storeToMap() {
-        Log.d(TAG, "********************** store to map");
     }
 
     // to assign each subcategory to its parent category
@@ -159,9 +178,80 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
             for (int j=0; j<Singleton.get(mContext).GetCategory().size(); ++j) {
                 if (subCatList.get(i).getParentId().equals(Singleton.get(mContext).GetCategory().get(j).getId())) {
                     Singleton.get(mContext).GetCategory().get(j).addSubCategory(subCatList.get(i));
+                    Singleton.get(mContext).SetSubcatToCategoryMap(subCatList.get(i).getId(), Singleton.get(mContext).GetCategory().get(j).getId());
                     break;
                 }
             }
         }
+
+//        Log.d(TAG, "********************* size of list " + subCatList.size());
+//        Log.d(TAG, "********************** size of map " +  Singleton.get(mContext).GetSubcategoryToCategoryMap().size());
+//        Log.d(TAG, "********************** main cat id " +  Singleton.get(mContext).GetSubcategoryToCategoryMap().get("59d6b4dd3fdf2e4bed10fcc1"));
+    }
+
+    private void AssignResource(ArrayList<ResourceClass> resourceList) {
+//
+//        Log.d(TAG, "********************** size of map " +  Singleton.get(mContext).GetCategoryToResourceMap().size());
+//        Log.d(TAG, "********************** size of list " +  resourceList.size());
+
+        int count = 0;
+        for (int i = 0; i < resourceList.size(); ++i) {
+            // get subcategory id for this resource using resource_to_category map
+            String subcat_id = Singleton.get(mContext).GetCategoryToResourceMap().get(resourceList.get(i).GetResourceId());
+            // get main category id using subcategory_to_category map
+            String maincat_id = Singleton.get(mContext).GetSubcategoryToCategoryMap().get(subcat_id);
+//            Log.d(TAG, "..................... category id = " + subcat_id );
+//            Log.d(TAG, "..................... maincat_id = " + maincat_id );
+//
+//            Log.d(TAG, "......... index = " + i);
+            for (int j = 0; j < Singleton.get(mContext).GetCategory().size(); ++j) {
+                String mainCatId = Singleton.get(mContext).GetCategory().get(j).getId();
+//                Log.d(TAG, "........ id = " + Singleton.get(mContext).GetCategory().get(j).getId());
+                if (maincat_id != null) {
+
+                    // TODO: check which resource is null
+                    if (maincat_id.equals(mainCatId)) {
+                        String subcat_name = "" ;
+                        for (int x = 0; x < Singleton.get(mContext).GetSubCategory().size(); ++ x) {
+                            if (subcat_id.equals( Singleton.get(mContext).GetSubCategory().get(x).getId())) {
+                                subcat_name = Singleton.get(mContext).GetSubCategory().get(x).getCategoryName();
+//                                Log.d(TAG, " name " + Singleton.get(mContext).GetSubCategory().get(x).getCategoryName());
+                            }
+                        }
+                        Log.d(TAG, "..res " + resourceList.get(i).GetResourceName() + " .. sc " + subcat_name + ".. c" + Singleton.get(mContext).GetCategory().get(j).getCategoryName());
+                        CategoryClass mainCategory = Singleton.get(mContext).GetCategory().get(j);
+                        mainCategory.addResourceToSubcategory(subcat_id, resourceList.get(i));
+                        ++count;
+                        break;
+//                        Log.d(TAG, "-------------------------- category name = " + Singleton.get(mContext).GetCategory().get(j).getCategoryName());
+                    }
+                } else {
+//                    Log.d(TAG, "########################################");
+//                    Log.d(TAG, "resource name " + resourceList.get(i).GetResourceName());
+//                    for (int x = 0; x < Singleton.get(mContext).GetSubCategory().size(); ++ x) {
+//                        if (subcat_id.equals( Singleton.get(mContext).GetSubCategory().get(x).getId())) {
+//                            Log.d(TAG, " name " + Singleton.get(mContext).GetSubCategory().get(x).getCategoryName());
+//                        }
+//                    }
+
+                }
+            }
+
+//            Log.d(TAG, ".............. resources taht are stored = " + count);
+        }
+
+//        for (int i = 0; i < Singleton.get(mContext).GetCategory().size(); ++i) {
+//            Log.d(TAG, "............ MAIN CATEGORY = " + Singleton.get(mContext).GetCategory().get(i).getCategoryName());
+//            for (int j = 0; j < Singleton.get(mContext).GetCategory().get(i).getSubCategoryList().size(); ++j) {
+//                Log.d(TAG, ".............. SUB CATEGORY = " + Singleton.get(mContext).GetCategory().get(i).getSubCategoryList().get(j).getCategoryName());
+//                String subcatid = Singleton.get(mContext).GetCategory().get(i).getSubCategoryList().get(j).getId();
+//                int resourceSize = Singleton.get(mContext).GetCategory().get(i).GetResourceMap().get(subcatid).size();
+//                Log.d(TAG, "............... size of resource = " + resourceSize);
+//
+//                for (int k = 0; k < resourceSize; ++k ) {
+//                    Log.d(TAG, "............... resource " + k + Singleton.get(mContext).GetCategory().get(i).GetResourceMap().get(subcatid).get(k).GetResourceName());
+//                }
+//            }
+//        }
     }
 }
