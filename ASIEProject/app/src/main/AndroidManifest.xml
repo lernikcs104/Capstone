@@ -21,6 +21,8 @@
 
         <activity android:name=".SubCategoryActivity"
             android:label="Subcategory List"/>
+        <activity android:name=".ResourceActivity"
+            android:label="Resource List"/>
     </application>
 
 </manifest>
