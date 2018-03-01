@@ -54,6 +54,8 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
     List<CategoryClass> categoryRow;
     ListArrayAdapter adapter;
     private String rowItemString;
+    private static final String categoryURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
+    private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
 
     public MainActivityFragment() {}
 
@@ -75,17 +77,32 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
         // instantiating singleton
         Singleton.get(getActivity().getApplicationContext()).Instantiate();
+
         // instantiate Volley callback
         callback = new VolleyCallback() {
             @Override
             public void onSuccess(ArrayList<CategoryClass> result) {
                 populateList();
-
             }
+
+            @Override
+            public void onSuccess(Map<String, String> result) { }
         };
 
-        db = new database(getActivity().getApplication(), callback);
+        if (! Singleton.get(getActivity().getApplicationContext()).IsCategorySet()){
+            db = new database(getActivity().getApplication(), callback, categoryURL, 1);
+            Singleton.get(getActivity().getApplicationContext()).SetCategoryFlag();
+        }
+
         return v;
+    }
+
+    // this function will be called when the user is back from the next activity
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "request code " + requestCode);
     }
 
     public void populateList() {
@@ -106,14 +123,12 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
         rowItemString = categoryRow.get(position).toString();
 
         Intent intent = new Intent(getActivity().getApplicationContext(), SubCategoryActivity.class);
         intent.putExtra(MainActivity.EXTRA_CATEGORY, position);
         getActivity().setResult(Activity.RESULT_OK, intent);
-        getActivity().finish();
         startActivity(intent);
-//        intent.putExtra(MainActivity.EXTRA_CATEGORY)
-
     }
 }

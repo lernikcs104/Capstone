@@ -38,4 +38,8 @@ public class ResourceClass implements Serializable {
         this.mResourceWeb = web;
         this.mResourceDescription = desc;
     }
+
+    public String GetResourceName() {
+        return mResourceName;
+    }
 }

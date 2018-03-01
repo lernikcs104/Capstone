@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -14,6 +16,11 @@ public class Singleton {
     private final String TAG = Singleton.class.getSimpleName();
     private ArrayList<CategoryClass> mCategoryList = new ArrayList<CategoryClass>();
     private ArrayList<CategoryClass> mSubCategoryList = new ArrayList<CategoryClass>();
+    private ArrayList<ResourceClass> mResourceList = new ArrayList<ResourceClass>();
+    private Map<String, String> mCategoryToResourceMap = new HashMap<String, String>();
+    private boolean mIsCategorySet, mIsCategoryToResourceSet, mIsResourceSet = false;
+
+
     private static Singleton singleton;
     private Context mContext;
 
@@ -40,20 +47,46 @@ public class Singleton {
         mSubCategoryList.add(c);
     }
 
+    public void AddResource(ResourceClass r) {
+        mResourceList.add(r);
+    }
+
     public ArrayList<CategoryClass> GetCategory() {
         return mCategoryList;
     }
 
-    public ArrayList<CategoryClass> GetSubCategory() {
-        return mSubCategoryList;
+    public ArrayList<CategoryClass> GetSubCategory() {return mSubCategoryList;}
+
+    public void AddToMap(String key, String value) {
+        // key is Resource ID, value is Categories id
+        mCategoryToResourceMap.put(key, value);
     }
 
-    public void Print() {
-        Log.d(TAG, "!!!!!! size mainV" + mCategoryList.size());
-        for (int i = 0; i < mCategoryList.size(); ++i) {
-            Log.d(TAG, "......... id " + mCategoryList.get(i).getId());
-            Log.d(TAG, "......... name " + mCategoryList.get(i).getCategoryName());
-            Log.d(TAG, "......... parent_id " + mCategoryList.get(i).getParentId());
-        }
+    public Map<String, String> GetCategoryToResourceMap() {
+        return mCategoryToResourceMap;
+    }
+
+    public void SetCategoryFlag() {
+        mIsCategorySet = true;
+    }
+
+    public void SetCategoryToResourceFlag() {
+        mIsCategoryToResourceSet = true;
+    }
+
+    public void SetResourceFlag() {
+        mIsResourceSet = true;
+    }
+
+    public boolean IsCategorySet() {
+        return mIsCategorySet;
+    }
+
+    public boolean IsResToCatSet() {
+        return mIsCategoryToResourceSet;
+    }
+
+    public boolean IsResourceSet() {
+        return mIsResourceSet;
     }
 }

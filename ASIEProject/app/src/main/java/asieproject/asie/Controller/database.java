@@ -36,8 +36,12 @@ import static android.content.ContentValues.TAG;
 
 public class database {//extends AsyncTask<Object, Void, JSONObject> {
 
+    private final int URL_CODE_CAT = 1;
+    private final int URL_CODE_CAT_TO_RES = 2;
+    private final int URL_CODE_RES = 3;
+
     private Context mContext;
-    private final String dbUrlCategory = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
+//    private final String dbUrlCategory = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
     private final String  dbUrlResource = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
     private final String dbUrlCategoryToResource = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
 
@@ -50,7 +54,7 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
     private Vector<CategoryClass> mSubCategoryVector;
     private Vector<JSONObject> mJsonObjectVector;
 
-    public database(final Context context, final VolleyCallback callback) {
+    public database(final Context context, final VolleyCallback callback, String dbURL, final int urlCode) {
 
         mContext = context;
 
@@ -63,15 +67,21 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
 
         JsonArrayRequest jsArrayRequest = new JsonArrayRequest //make json object request
-                (Request.Method.GET, dbUrlCategory, null, new Response.Listener<JSONArray>() { //anonymous listener
+                (Request.Method.GET, dbURL, null, new Response.Listener<JSONArray>() { //anonymous listener
                     @Override
                     public void onResponse(JSONArray response) { //the server response is a JSONArray containing the data
                         try {
                             for (int i = 0; i < response.length(); ++i) {
                                 mJsonObjectVector.add(response.getJSONObject(i));
                             }
-                            parseJson();
-                            callback.onSuccess(Singleton.get(mContext).GetCategory());
+                            parseJson(urlCode);
+                            if (urlCode == URL_CODE_CAT) {
+                                callback.onSuccess(Singleton.get(mContext).GetCategory());
+                            } else if (urlCode == URL_CODE_CAT_TO_RES) {
+                                storeToMap();
+                                callback.onSuccess(Singleton.get(mContext).GetCategoryToResourceMap());
+                            }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -103,29 +113,44 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
     }
 
     // to parse categories and subcategories from JSON obj
-    private void parseJson() {
+    private void parseJson(int requestCode) {
+
         try {
             for (int i = 0; i < mJsonObjectVector.size(); ++i) {
-                String id =  mJsonObjectVector.elementAt(i).getString("_id").substring(9, 33);
-                String name = mJsonObjectVector.elementAt(i).getString("name");
-                String parent_id = mJsonObjectVector.elementAt(i).getString("parent_id");
+                if (requestCode == URL_CODE_CAT) {
+                    String id =  mJsonObjectVector.elementAt(i).getString("_id").substring(9, 33);
+                    String name = mJsonObjectVector.elementAt(i).getString("name");
+                    String parent_id = mJsonObjectVector.elementAt(i).getString("parent_id");
 
-                CategoryClass c;
-                if (parent_id.length() == 0) {
-                    c = new CategoryClass(id, parent_id, name, mCategoryImages[i]);
-                    Singleton.get(mContext).AddCategory(c);
-                } else {
-                    c = new CategoryClass(id, parent_id, name);
-                    Singleton.get(mContext).AddSubCategory(c);
+                    CategoryClass c;
+                    if (parent_id.length() == 0) {
+                        c = new CategoryClass(id, parent_id, name, mCategoryImages[i]);
+                        Singleton.get(mContext).AddCategory(c);
+                    } else {
+                        c = new CategoryClass(id, parent_id, name);
+                        Singleton.get(mContext).AddSubCategory(c);
+                    }
+                } else if (requestCode == URL_CODE_CAT_TO_RES) {
+                    String cat_id =  mJsonObjectVector.elementAt(i).getString("parent_id"); //.substring(9, 33);
+                    String res_id =  mJsonObjectVector.elementAt(i).getString("resource_id"); //.substring(9, 33);
+                    Singleton.get(mContext).AddToMap(res_id, cat_id);
                 }
             }
 
-            // add subcategory to its corresponding parent category
-            AssignSubCategory(Singleton.get(mContext).GetSubCategory());
+            if (requestCode == URL_CODE_CAT) {
+                // add subcategory to its corresponding parent category
+                AssignSubCategory(Singleton.get(mContext).GetSubCategory());
+            } else if( requestCode == URL_CODE_RES) {
+
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void storeToMap() {
+        Log.d(TAG, "********************** store to map");
     }
 
     // to assign each subcategory to its parent category

@@ -1,5 +1,7 @@
 package asieproject.asie;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,13 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import asieproject.asie.Controller.database;
 import asieproject.asie.Model.CategoryClass;
 import asieproject.asie.Model.Singleton;
+import asieproject.asie.Model.VolleyCallback;
 import asieproject.asie.View.SubCategoryListAdapter;
 
 import static android.content.ContentValues.TAG;
@@ -23,14 +29,17 @@ import static android.content.ContentValues.TAG;
  * Created by CACTUS on 2/20/2018.
  */
 
-public class SubCategoryFragment extends Fragment {
+public class SubCategoryFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     public static final String TAG = SubCategoryFragment.class.getSimpleName();
     private ListView mListView;
     List<CategoryClass> subcategoryRow;
     SubCategoryListAdapter adapter;
     private int mListPosition;
+    VolleyCallback callback;
+    database db;
 
+    private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     public SubCategoryFragment() {}
 
     public static SubCategoryFragment newInstance(int pos) {
@@ -53,8 +62,28 @@ public class SubCategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.sub_category_fragment, container, false);
-
         mListView = (ListView)v.findViewById(R.id.sub_category_list);
+
+        // success call to category_to_resource db data
+        callback = new VolleyCallback() {
+            @Override
+            public void onSuccess(ArrayList<CategoryClass> result) {}
+
+            @Override
+            public void onSuccess(Map<String, String> result) {
+                // TODO: get the map
+
+                if (! Singleton.get(getActivity().getApplicationContext()).IsResourceSet()) {
+                    // set resources
+                }
+            }
+        };
+
+
+        if (! Singleton.get(getActivity().getApplicationContext()).IsResToCatSet()) {
+            db = new database(getActivity().getApplication(), callback, categoryToResourceURL, 2);
+            Singleton.get(getActivity().getApplicationContext()).SetCategoryToResourceFlag();
+        }
 
         populateList();
 
@@ -75,6 +104,18 @@ public class SubCategoryFragment extends Fragment {
         // populate the list view with category row
         adapter = new SubCategoryListAdapter(getActivity().getApplicationContext(), R.layout.subcategory_list_item, subcategoryRow);
         mListView.setAdapter(adapter);
-//        mListView.setOnItemClickListener(this);
+        mListView.setOnItemClickListener(this);
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+//        rowItemString = categoryRow.get(position).toString();
+
+        Intent intent = new Intent(getActivity().getApplicationContext(), ResourceActivity.class);
+        intent.putExtra(MainActivity.EXTRA_RESOURCE, position);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+        startActivity(intent);
+    }
+
 }

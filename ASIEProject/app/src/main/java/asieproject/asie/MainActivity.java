@@ -13,6 +13,7 @@ import asieproject.asie.Model.Singleton;
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_CATEGORY = "EXTRA_CATEGORY";
+    public static final String EXTRA_RESOURCE = "EXTRA_RESOURCE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
