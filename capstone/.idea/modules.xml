@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\CACTUS\AndroidProjects\AndroidProjects\Capstone\Capstone\capstone\app\app.iml" filepath="C:\Users\CACTUS\AndroidProjects\AndroidProjects\Capstone\Capstone\capstone\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/capstone.iml" filepath="$PROJECT_DIR$/capstone.iml" />
+      <module fileurl="file://C:\Users\CACTUS\AndroidProjects\AndroidProjects\Capstone\Capstone\capstone\capstone.iml" filepath="C:\Users\CACTUS\AndroidProjects\AndroidProjects\Capstone\Capstone\capstone\capstone.iml" />
     </modules>
   </component>
 </project>
