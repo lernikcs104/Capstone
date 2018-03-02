@@ -218,7 +218,7 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
 //                                Log.d(TAG, " name " + Singleton.get(mContext).GetSubCategory().get(x).getCategoryName());
                             }
                         }
-                        Log.d(TAG, "..res " + resourceList.get(i).GetResourceName() + " .. sc " + subcat_name + ".. c" + Singleton.get(mContext).GetCategory().get(j).getCategoryName());
+//                        Log.d(TAG, "..res " + resourceList.get(i).GetResourceName() + " .. sc " + subcat_name + ".. c" + Singleton.get(mContext).GetCategory().get(j).getCategoryName());
                         CategoryClass mainCategory = Singleton.get(mContext).GetCategory().get(j);
                         mainCategory.addResourceToSubcategory(subcat_id, resourceList.get(i));
                         ++count;

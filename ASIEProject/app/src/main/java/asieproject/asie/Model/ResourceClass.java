@@ -38,6 +38,15 @@ public class ResourceClass implements Serializable {
     public String GetResourceName() {
         return mResourceName;
     }
+    public String GetResourceAddress() {
+        return mResourceAddress;
+    }
+    public String GetResourcePhone() {return mResourcePhone;}
+    public String GetResourceEmail() {
+        return mResourceEmail;
+    }
+    public String GetResourceWebsite() { return mResourceWeb; }
+    public String GetResourceDescription() { return mResourceDescription; }
 
 
     public String getSubcategoryId() {return mSubcategoryId;}

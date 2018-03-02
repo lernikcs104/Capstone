@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_CATEGORY = "EXTRA_CATEGORY";
     public static final String EXTRA_RESOURCE = "EXTRA_RESOURCE";
     public static final String EXTRA_SUBCATEGORY_ID = "EXTRA_SUBCATEGORY_ID";
+    public static final String EXTRA_RESOURCE_DETAIL = "EXTRA_RESOURCE_DETAIL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
