@@ -2,6 +2,7 @@ package asieproject.asie;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +43,9 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
     ResourceClass mCurrentResource;
     TextView headerText;
     String header;
+    private ImageView backImage;
+
+
     public ResourceFragment() {
     }
 
@@ -68,6 +73,8 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         Log.d(TAG, "....................... sub cat id " + mSubcategoryId);
         Log.d(TAG, "....................... main cat id " + mainCategoryIndex);
         Log.d(TAG, "....................... main header " + header);
+
+
     }
 
     @Nullable
@@ -78,6 +85,17 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         headerText = (TextView)v.findViewById(R.id.topText);
 
         populateList();
+
+        backImage = (ImageView) v.findViewById(R.id.back_icon);
+
+        //on clicking th back arrow it goes to previous page
+        backImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backImage.setColorFilter(0x55215894, PorterDuff.Mode.MULTIPLY);
+                getActivity().finish();
+            }
+        });
 
         return v;
     }

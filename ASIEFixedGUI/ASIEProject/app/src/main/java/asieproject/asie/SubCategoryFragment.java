@@ -2,6 +2,7 @@ package asieproject.asie;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +43,7 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
     VolleyCallback callback;
     database db;
     private TextView headerText;
+    private ImageView backImage;
 
     private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     private final String  resourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
@@ -68,6 +71,16 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         View v = inflater.inflate(R.layout.sub_category_fragment, container, false);
         mListView = (ListView)v.findViewById(R.id.sub_category_list);
         headerText = (TextView)v.findViewById(R.id.topText);
+        backImage = (ImageView) v.findViewById(R.id.back_icon);
+
+        //on clicking th back arrow it goes to previous page
+        backImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backImage.setColorFilter(0x55215894, PorterDuff.Mode.MULTIPLY);
+                getActivity().finish();
+            }
+        });
 
         // success call to category_to_resource db data
         callback = new VolleyCallback() {
@@ -99,6 +112,8 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         return v;
     }
 
+
+
     private void populateList() {
         ArrayList<CategoryClass> subCategoryList = new ArrayList<CategoryClass>();
         // get subcategories based on the category row clicked by the user
@@ -116,6 +131,8 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(this);
     }
+
+
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

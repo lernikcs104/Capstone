@@ -3,6 +3,7 @@ package asieproject.asie;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,7 @@ public class ResourceInfoFragment extends Fragment {
     TextView addressTextView;
     TextView descriptionTextView;
     TextView nameTextView;
+    ImageView backImage;
 
     public ResourceInfoFragment() {}
 
@@ -76,6 +79,17 @@ public class ResourceInfoFragment extends Fragment {
         addressTextView = (TextView) v.findViewById(R.id.res_info_address);
         descriptionTextView = (TextView) v.findViewById(R.id.res_info_description);
         nameTextView = (TextView) v.findViewById(R.id.topText);
+
+        backImage = (ImageView) v.findViewById(R.id.back_icon);
+
+        //on clicking th back arrow it goes to previous page
+        backImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backImage.setColorFilter(0x55215894, PorterDuff.Mode.MULTIPLY);
+                getActivity().finish();
+            }
+        });
 
         if (!mResource.GetResourceName().isEmpty() ) {
             nameTextView.setText(mResource.GetResourceName());

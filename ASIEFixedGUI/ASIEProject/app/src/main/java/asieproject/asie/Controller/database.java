@@ -48,8 +48,8 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
     private final String dbUrlCategoryToResource = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
 
     public static final Integer[] mCategoryImages = { R.drawable.medicalrecords,
-            R.drawable.healthcare, R.drawable.balance, R.drawable.charity,
-            R.drawable.americanfootball, R.drawable.library, R.drawable.suitcase, R.drawable.team };
+            R.drawable.healthcare, R.drawable.library, R.drawable.americanfootball,
+            R.drawable.suitcase, R.drawable.balance, R.drawable.team, R.drawable.charity };
 
     private Vector<CategoryClass> mMainCategoryVector;
 

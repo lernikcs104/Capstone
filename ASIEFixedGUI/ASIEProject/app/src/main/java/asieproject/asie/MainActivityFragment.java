@@ -3,13 +3,13 @@ package asieproject.asie;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -57,6 +57,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
     private String rowItemString;
     private static final String categoryURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
     private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
+    BottomNavigationView bottomNavigationView;
 
     public MainActivityFragment() {}
 
@@ -68,13 +69,35 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         return f;
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         Log.d(TAG, "in onCreateView");
         View v = inflater.inflate(R.layout.main_activity_fragment, container, false);
 
         listView = (ListView) v.findViewById((R.id.list));
+
+
+
+       BottomNavigationView bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
+
+
+//        bottomNavigationView.setOnNavigationItemSelectedListener(
+//                new BottomNavigationView.OnNavigationItemSelectedListener() {
+//                    @Override
+//                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                        switch (item.getItemId()) {
+//                            case R.id.calendar:
+//
+//                            case R.id.home:
+//
+//                            case R.id.info:
+//
+//                        }
+//                        return true;
+//                    }
+//                });
+
 
         // instantiating singleton
         Singleton.get(getActivity().getApplicationContext()).Instantiate();
@@ -98,7 +121,34 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
             Singleton.get(getActivity().getApplicationContext()).SetCategoryFlag();
         }
 
+
+
         return v;
+    }
+
+
+    private void setupBottomNavigation() {
+
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.calendar:
+                       // loadHomeFragment();
+                        return true;
+                    case R.id.home:
+                       // loadProfileFragment();
+                        return true;
+                    case R.id.info:
+                       // loadSettingsFragment();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     // this function will be called when the user is back from the next activity
