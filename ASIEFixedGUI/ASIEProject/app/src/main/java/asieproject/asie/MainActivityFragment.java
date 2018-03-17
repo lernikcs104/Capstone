@@ -161,6 +161,10 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         ArrayList<ResourceClass> result = new ArrayList<ResourceClass>();
         ArrayList<ResourceClass> resourceList = Singleton.get(getActivity().getApplicationContext()).GetResource();
         for (int i=0; i<resourceList.size(); ++i) {
+            if (searchKeyword.toLowerCase().equals("doctor")) {
+                searchKeyword = "dr";
+            }
+
             if (resourceList.get(i).GetResourceName().toLowerCase().contains(searchKeyword.toLowerCase())) {
                 result.add(resourceList.get(i));
             }
