@@ -121,7 +121,7 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         subcategoryRow = new ArrayList<CategoryClass>();
         headerText.setText( Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getCategoryName());
 
-//      populate each row
+        // populate each row
         for (int i=0; i<subCategoryList.size(); ++i) {
             subcategoryRow.add(subCategoryList.get(i));
         }
@@ -144,7 +144,7 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         intent.putExtra(MainActivity.EXTRA_SUBCATEGORY_ID, subcategoryList.get(position).getId());
         intent.putExtra(MainActivity.EXTRA_CATEGORY, mListPosition);
         intent.putExtra(MainActivity.EXTRA_HEADER,subcategoryList.get(position).getCategoryName());
-        Log.d(TAG, "....................... main header " + subcategoryList.get(position).getCategoryName());
+
         getActivity().setResult(Activity.RESULT_OK, intent);
         startActivity(intent);
     }

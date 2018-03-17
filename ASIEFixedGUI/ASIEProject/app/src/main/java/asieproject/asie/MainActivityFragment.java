@@ -59,7 +59,9 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
     ListArrayAdapter adapter;
     private String rowItemString;
     private static final String categoryURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
-    private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
+    private static final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
+    private static final String resourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
+
     BottomNavigationView bottomNavigationView;
     private EditText searchEditText;
 
@@ -83,8 +85,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         searchEditText = (EditText) v.findViewById(R.id.myEditText);
         searchEditText.addTextChangedListener(searchTextWatcher);
 
-       BottomNavigationView bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
-
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
 
 //        bottomNavigationView.setOnNavigationItemSelectedListener(
 //                new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -120,10 +121,21 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
             public void onSuccessResource(ArrayList<ResourceClass> result) {}
         };
 
-        if (! Singleton.get(getActivity().getApplicationContext()).IsCategorySet()){
-            Log.d(TAG, "************************************** categories loaded");
+        if (! Singleton.get(getActivity().getApplicationContext()).IsCategorySet() &&
+                ! Singleton.get(getActivity().getApplicationContext()).IsResourceSet()){
+
+            // retrieve categories from mongoDB
             db = new database(getActivity().getApplication(), callback, categoryURL, 1);
             Singleton.get(getActivity().getApplicationContext()).SetCategoryFlag();
+            Log.d(TAG, "************************************** categories loaded");
+
+            db = new database(getActivity().getApplication(), callback, categoryToResourceURL, 2);
+            Singleton.get(getActivity().getApplicationContext()).SetCategoryToResourceFlag();
+
+            // retrieve resources from mongoDB
+            db = new database(getActivity().getApplication(), callback, resourceURL, 3);
+            Singleton.get(getActivity().getApplicationContext()).SetResourceFlag();
+            Log.d(TAG, "............. resources loaded");
         }
         return v;
     }
@@ -164,7 +176,6 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
             if (searchKeyword.toLowerCase().equals("doctor")) {
                 searchKeyword = "dr";
             }
-
             if (resourceList.get(i).GetResourceName().toLowerCase().contains(searchKeyword.toLowerCase())) {
                 result.add(resourceList.get(i));
             }

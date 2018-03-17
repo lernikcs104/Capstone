@@ -55,7 +55,7 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         bundle.putInt(MainActivity.EXTRA_CATEGORY, mainCatIndex);
         bundle.putString(MainActivity.EXTRA_SUBCATEGORY_ID, subcat_id);
         bundle.putString(MainActivity.EXTRA_HEADER, header_text);
-//        Log.d(TAG, ".......................bundleeee header " + header_text);
+
         ResourceFragment f = new ResourceFragment();
         f.setArguments(bundle);
 
@@ -70,11 +70,6 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         mSubcategoryId = bundle.getString(MainActivity.EXTRA_SUBCATEGORY_ID);
         mainCategoryIndex = bundle.getInt(MainActivity.EXTRA_CATEGORY);
         header = bundle.getString(MainActivity.EXTRA_HEADER);
-//        Log.d(TAG, "....................... sub cat id " + mSubcategoryId);
-//        Log.d(TAG, "....................... main cat id " + mainCategoryIndex);
-//        Log.d(TAG, "....................... main header " + header);
-
-
     }
 
     @Nullable
@@ -104,27 +99,24 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         ArrayList<ResourceClass> resourceList = new ArrayList<ResourceClass>();
         // get subcategories based on the category row clicked by the user
         resourceList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId);
-        Log.d(TAG, "!!!!!!!!!!!!!! size " + resourceList.size());
+
         mResourceRow = new ArrayList<ResourceClass>();
-       // headerText.setText(Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId).get(mListPosition).GetResourceName());
+        // headerText.setText(Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId).get(mListPosition).GetResourceName());
         headerText.setText(header);
-//     populate each row
+        // populate each row
         for (int i=1; i<resourceList.size(); ++i) {
             mResourceRow.add(resourceList.get(i));
         }
 
-//        // populate the list view with category row
+        // populate the list view with category row
         adapter = new ResourceListAdapter (getActivity().getApplicationContext(), R.layout.resource_list_item, mResourceRow);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(this);
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         mCurrentResource = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId).get(position + 1);
-//        Log.d(TAG, "...................... NAME NAME NAME " + mCurrentResource.GetResourceName());
-
         Intent intent = new Intent(getActivity().getApplicationContext(), ResourceInfoActivity.class);
         intent.putExtra(MainActivity.EXTRA_RESOURCE_DETAIL, (ResourceClass) mCurrentResource);
         getActivity().setResult(Activity.RESULT_OK, intent);
