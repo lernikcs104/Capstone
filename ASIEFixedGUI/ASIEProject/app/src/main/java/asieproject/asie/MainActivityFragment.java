@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -47,7 +50,7 @@ import static android.content.ContentValues.TAG;
  * Created by CACTUS on 1/25/2018.
  */
 
-public class MainActivityFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class MainActivityFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     database db;
     VolleyCallback callback;
@@ -58,6 +61,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
     private static final String categoryURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
     private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     BottomNavigationView bottomNavigationView;
+    private EditText searchEditText;
 
     public MainActivityFragment() {}
 
@@ -76,8 +80,8 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         View v = inflater.inflate(R.layout.main_activity_fragment, container, false);
 
         listView = (ListView) v.findViewById((R.id.list));
-
-
+        searchEditText = (EditText) v.findViewById(R.id.myEditText);
+        searchEditText.addTextChangedListener(searchTextWatcher);
 
        BottomNavigationView bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
 
@@ -117,19 +121,54 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         };
 
         if (! Singleton.get(getActivity().getApplicationContext()).IsCategorySet()){
+            Log.d(TAG, "************************************** categories loaded");
             db = new database(getActivity().getApplication(), callback, categoryURL, 1);
             Singleton.get(getActivity().getApplicationContext()).SetCategoryFlag();
         }
-
-
-
         return v;
     }
 
+    private final TextWatcher searchTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String searchStr;
+             if (count > 0) {
+                searchStr = searchEditText.getText().toString();
+                Log.d(TAG, "................. search word " + searchStr);
+
+                ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
+
+                Log.d(TAG, "###################################");
+                 for (int i=0; i<searchResult.size(); ++i) {
+                     Log.d(TAG,"------------------------------ name: " + searchResult.get(i).GetResourceName());
+                 }
+                 Log.d(TAG, "###################################");
+             }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    private ArrayList<ResourceClass> SearchResource(String searchKeyword) {
+        ArrayList<ResourceClass> result = new ArrayList<ResourceClass>();
+        ArrayList<ResourceClass> resourceList = Singleton.get(getActivity().getApplicationContext()).GetResource();
+        for (int i=0; i<resourceList.size(); ++i) {
+            if (resourceList.get(i).GetResourceName().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                result.add(resourceList.get(i));
+            }
+        }
+        return result;
+    }
 
     private void setupBottomNavigation() {
-
-
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

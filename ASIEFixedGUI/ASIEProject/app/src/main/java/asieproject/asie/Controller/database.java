@@ -85,7 +85,6 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                                 callback.onSuccessResource(Singleton.get(mContext).GetResource());
                             }
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

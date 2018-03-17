@@ -55,7 +55,7 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         bundle.putInt(MainActivity.EXTRA_CATEGORY, mainCatIndex);
         bundle.putString(MainActivity.EXTRA_SUBCATEGORY_ID, subcat_id);
         bundle.putString(MainActivity.EXTRA_HEADER, header_text);
-        Log.d(TAG, ".......................bundleeee header " + header_text);
+//        Log.d(TAG, ".......................bundleeee header " + header_text);
         ResourceFragment f = new ResourceFragment();
         f.setArguments(bundle);
 
@@ -70,9 +70,9 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         mSubcategoryId = bundle.getString(MainActivity.EXTRA_SUBCATEGORY_ID);
         mainCategoryIndex = bundle.getInt(MainActivity.EXTRA_CATEGORY);
         header = bundle.getString(MainActivity.EXTRA_HEADER);
-        Log.d(TAG, "....................... sub cat id " + mSubcategoryId);
-        Log.d(TAG, "....................... main cat id " + mainCategoryIndex);
-        Log.d(TAG, "....................... main header " + header);
+//        Log.d(TAG, "....................... sub cat id " + mSubcategoryId);
+//        Log.d(TAG, "....................... main cat id " + mainCategoryIndex);
+//        Log.d(TAG, "....................... main header " + header);
 
 
     }
@@ -104,7 +104,7 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         ArrayList<ResourceClass> resourceList = new ArrayList<ResourceClass>();
         // get subcategories based on the category row clicked by the user
         resourceList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId);
-//        Log.d(TAG, "!!!!!!!!!!!!!! size " + resourceList.size());
+        Log.d(TAG, "!!!!!!!!!!!!!! size " + resourceList.size());
         mResourceRow = new ArrayList<ResourceClass>();
        // headerText.setText(Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId).get(mListPosition).GetResourceName());
         headerText.setText(header);

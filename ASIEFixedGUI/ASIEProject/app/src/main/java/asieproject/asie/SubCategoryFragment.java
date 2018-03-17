@@ -91,9 +91,9 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
             public void onSuccess(Map<String, String> result) {
 
                 if (! Singleton.get(getActivity().getApplicationContext()).IsResourceSet()) {
+                    Log.d(TAG, "............. resources loaded");
                     db = new database(getActivity().getApplication(), callback, resourceURL, 3);
                     Singleton.get(getActivity().getApplicationContext()).SetResourceFlag();
-
                 }
             }
 
