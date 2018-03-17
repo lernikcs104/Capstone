@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorAccent">
+            <ImageView
+                android:id="@+id/back_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/image"
+                android:foregroundGravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:src="@drawable/back"
+                />
+
+            <TextView
+                android:id="@+id/topText"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"
+                android:fontFamily="sans-serif"
+                android:textSize="22dp"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <!--<ListView-->
+            <!--android:id="@+id/res_info_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="500dp"-->
+            <!--android:layout_below="@+id/toolbar_layer"/>-->
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/image"
+            android:foregroundGravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/phone"
+            />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp"
+            android:paddingLeft="10dp"
+            android:textColor="#CC0033"
+            android:textSize="22dp"
+            android:text="CALL"/>
+
+        <TextView
+            android:id="@+id/res_info_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_toRightOf="@+id/icon"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000203"
+            android:textSize="19dp"
+            android:text="There is no Phone number for this link"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            >
+        <ImageView
+            android:id="@+id/icon1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="@string/image"
+            android:foregroundGravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/website"
+            />
+
+        <TextView
+            android:id="@+id/title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon1"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp"
+            android:paddingLeft="10dp"
+            android:textColor="#CC0033"
+            android:textSize="22dp"
+            android:text="WEBSITE"/>
+
+        <TextView
+            android:id="@+id/res_info_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title1"
+            android:layout_toRightOf="@+id/icon1"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000203"
+            android:textSize="19dp"
+            android:text="There is no Website for this link"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            >
+        <ImageView
+            android:id="@+id/icon2"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/image"
+            android:foregroundGravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/directions"
+            />
+
+        <TextView
+            android:id="@+id/title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon2"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp"
+            android:paddingLeft="10dp"
+            android:textColor="#CC0033"
+            android:textSize="22dp"
+            android:text="ADDRESS"/>
+
+        <TextView
+            android:id="@+id/res_info_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title2"
+            android:layout_toRightOf="@+id/icon2"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000203"
+            android:textSize="19dp"
+            android:text="There is no address for this link"/>
+
+        </RelativeLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+        <TextView
+
+            android:id="@+id/destitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:textColor="#CC0033"
+            android:textSize="25dp"
+            android:textStyle="bold"
+        />
+
+        <TextView
+            android:id="@+id/res_info_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:layout_below="@+id/destitle"
+            android:fontFamily="sans-serif"
+            android:textColor="#000203"
+            android:textSize="19dp"
+            android:text="There is no Description for this link"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
