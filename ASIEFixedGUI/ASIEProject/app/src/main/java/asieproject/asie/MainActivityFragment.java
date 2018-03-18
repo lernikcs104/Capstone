@@ -2,21 +2,28 @@ package asieproject.asie;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,11 +32,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,9 +55,6 @@ import asieproject.asie.Model.VolleyCallback;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by CACTUS on 1/25/2018.
- */
 
 public class MainActivityFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -64,6 +70,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
     BottomNavigationView bottomNavigationView;
     private EditText searchEditText;
+
 
     public MainActivityFragment() {}
 
@@ -83,25 +90,10 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
         listView = (ListView) v.findViewById((R.id.list));
         searchEditText = (EditText) v.findViewById(R.id.myEditText);
-        searchEditText.addTextChangedListener(searchTextWatcher);
+        //searchEditText.addTextChangedListener(searchTextWatcher);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
-
-//        bottomNavigationView.setOnNavigationItemSelectedListener(
-//                new BottomNavigationView.OnNavigationItemSelectedListener() {
-//                    @Override
-//                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                        switch (item.getItemId()) {
-//                            case R.id.calendar:
-//
-//                            case R.id.home:
-//
-//                            case R.id.info:
-//
-//                        }
-//                        return true;
-//                    }
-//                });
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
         // instantiating singleton
@@ -137,9 +129,44 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
             Singleton.get(getActivity().getApplicationContext()).SetResourceFlag();
             Log.d(TAG, "............. resources loaded");
         }
+
+        searchEditText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String searchStr;
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+
+                    ////
+                    Log.d("TEST RESPONSE", "Enter was pressed");
+
+                    searchStr = searchEditText.getText().toString();
+                    Log.d(TAG, "................. search word " + searchStr);
+
+                    ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
+                    //Bundle bundle = new Bundle();
+                    //bundle.putSerializable("SEARCH_RESULT", searchResult);
+                    intent.putExtra("SEARCH_RESULT",(Serializable)searchResult);
+                    //intent.putExtras(bundle);
+                    startActivity(intent);
+
+                    Log.d(TAG, "###################################");
+                    for (int i = 0; i < searchResult.size(); ++i) {
+                        Log.d(TAG, "------------------------------ name: " + searchResult.get(i).GetResourceName());
+                    }
+                    Log.d(TAG, "###################################");
+                }
+                //
+                    return true;
+
+            }
+        });
+
         return v;
     }
-
+/*
     private final TextWatcher searchTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -148,26 +175,53 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String searchStr;
-             if (count > 0) {
-                searchStr = searchEditText.getText().toString();
-                Log.d(TAG, "................. search word " + searchStr);
-
-                ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
-
-                Log.d(TAG, "###################################");
-                 for (int i=0; i<searchResult.size(); ++i) {
-                     Log.d(TAG,"------------------------------ name: " + searchResult.get(i).GetResourceName());
-                 }
-                 Log.d(TAG, "###################################");
-             }
+//            String searchStr;
+//            if (count > 0) {
+//                searchStr = searchEditText.getText().toString();
+//                Log.d(TAG, "................. search word " + searchStr);
+//
+//                ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
+//                Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("SEARCH_RESULT", searchResult);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//
+//                Log.d(TAG, "###################################");
+//                for (int i=0; i<searchResult.size(); ++i) {
+//                    Log.d(TAG,"------------------------------ name: " + searchResult.get(i).GetResourceName());
+//                }
+//                Log.d(TAG, "###################################");
+//            }
         }
 
         @Override
         public void afterTextChanged(Editable s) {
+            String searchStr;
 
+            if (s.charAt(s.length() - 1) == '\n') {
+                Log.d("TEST RESPONSE", "Enter was pressed");
+
+                searchStr = searchEditText.getText().toString();
+                Log.d(TAG, "................. search word " + searchStr);
+
+                ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
+                Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("SEARCH_RESULT", searchResult);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                Log.d(TAG, "###################################");
+                for (int i = 0; i < searchResult.size(); ++i) {
+                    Log.d(TAG, "------------------------------ name: " + searchResult.get(i).GetResourceName());
+                }
+                Log.d(TAG, "###################################");
+            }
         }
+
     };
+    */
 
     private ArrayList<ResourceClass> SearchResource(String searchKeyword) {
         ArrayList<ResourceClass> result = new ArrayList<ResourceClass>();
@@ -183,27 +237,42 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         return result;
     }
 
-    private void setupBottomNavigation() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.calendar:
+                    String url= "www.ieautism.org/events/";
+                    if(!url.contains("http://")){
+                        url= "http://"+url;
+                    }
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    try {
+                        startActivity(myIntent);
+                    } catch(Exception e){
 
-                switch (item.getItemId()) {
-                    case R.id.calendar:
-                       // loadHomeFragment();
-                        return true;
-                    case R.id.home:
-                       // loadProfileFragment();
-                        return true;
-                    case R.id.info:
-                       // loadSettingsFragment();
-                        return true;
-                }
-                return false;
+                        Log.d(TAG, "website", e);
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Item " + (2) + ": " + url,
+                                Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+                        toast.show();
+                    }
+                    return true;
+                case R.id.home:
+
+                    return true;
+                case R.id.info:
+                    Intent intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
+                    startActivity(intent);
+                    return true;
             }
-        });
-    }
+            return false;
+        }
+    };
 
     // this function will be called when the user is back from the next activity
     @Override

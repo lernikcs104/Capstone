@@ -17,11 +17,16 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_SUBCATEGORY_ID = "EXTRA_SUBCATEGORY_ID";
     public static final String EXTRA_RESOURCE_DETAIL = "EXTRA_RESOURCE_DETAIL";
     public static final String EXTRA_HEADER = "EXTRA_HEADER";
+    public static final String SEARCH_RESULT = "SEARCH_RESULT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //creating toolbar to place logo
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(toolbar);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);

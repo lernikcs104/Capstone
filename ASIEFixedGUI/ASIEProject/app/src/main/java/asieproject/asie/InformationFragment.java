@@ -1,23 +1,29 @@
 package asieproject.asie;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
+
+import asieproject.asie.Model.ResourceClass;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by lero on 3/8/18.
- */
+
 
 public class InformationFragment extends Fragment {
 
@@ -25,18 +31,43 @@ public class InformationFragment extends Fragment {
     TextView website;
     TextView email;
     TextView donate;
+    BottomNavigationView bottomNavigationView;
+    private ImageView backImage;
+
+    public InformationFragment() {
+        // Required empty public constructor
+    }
+    public static InformationFragment newInstance() {
+        Bundle args = new Bundle();
+
+        InformationFragment f = new InformationFragment();
+        f.setArguments(args);
+
+        return f;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "in onCreateView");
-        View v = inflater.inflate(R.layout.main_activity_fragment, container, false);
+        Log.d(TAG, "in Information fragment===========");
+        View v = inflater.inflate(R.layout.asie_info_fragment, container, false);
 
 
         phone = (TextView)v.findViewById(R.id.info_phone);
         website = (TextView)v.findViewById(R.id.info_website);
         email = (TextView)v.findViewById(R.id.info_email);
         donate = (TextView)v.findViewById(R.id.info_donate);
+        backImage = (ImageView) v.findViewById(R.id.back_icon);
+        bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
 
+
+        backImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backImage.setColorFilter(0x55215894, PorterDuff.Mode.MULTIPLY);
+                getActivity().finish();
+            }
+        });
         //clicking on the phone for calling
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,9 +162,51 @@ public class InformationFragment extends Fragment {
             }
         });
 
-
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         return v;
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
+
+            switch (item.getItemId()) {
+                case R.id.calendar:
+                    String url= "www.ieautism.org/events/";
+                    if(!url.contains("http://")){
+                        url= "http://"+url;
+                    }
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    try {
+                        startActivity(myIntent);
+                    } catch(Exception e){
+
+                        Log.d(TAG, "website", e);
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Item " + (2) + ": " + url,
+                                Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+                        toast.show();
+                    }
+                    return true;
+                case R.id.home:
+                    selectedFragment = MainActivityFragment.newInstance();
+                    //Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+//                    getActivity().setResult(Activity.RESULT_OK, intent);
+//                    startActivity(intent);
+                    android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_container, selectedFragment);
+                    transaction.commit();
+                    return true;
+                case R.id.info:
+                    Intent intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
 
 }

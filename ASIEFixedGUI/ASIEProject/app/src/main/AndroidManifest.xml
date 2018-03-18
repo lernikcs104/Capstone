@@ -32,6 +32,14 @@
         <activity android:name=".ResourceInfoActivity"
             android:label="Resource Information Detail"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        
+        <activity android:name=".InformationActivity"
+            android:label="ASIE Information Detail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".SearchActivity"
+            android:label="ASIE Information Detail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
     </application>
 
 </manifest>

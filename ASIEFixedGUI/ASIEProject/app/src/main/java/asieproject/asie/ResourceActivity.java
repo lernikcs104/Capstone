@@ -9,9 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-/**
- * Created by CACTUS on 2/28/2018.
- */
 
 public class ResourceActivity extends FragmentActivity {
     @Override

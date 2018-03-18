@@ -11,9 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import asieproject.asie.Model.ResourceClass;
 
-/**
- * Created by lero on 3/8/18.
- */
 
 public class InformationActivity extends AppCompatActivity {
     @Override
@@ -22,15 +19,17 @@ public class InformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Create fragment
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
         // get data from intent
-        Intent intent = getIntent();
-        ResourceClass resource = ((ResourceClass)intent.getSerializableExtra(MainActivity.EXTRA_RESOURCE_DETAIL));
+       // Intent intent = getIntent();
+       // ResourceClass resource = ((ResourceClass)intent.getSerializableExtra(MainActivity.EXTRA_RESOURCE_DETAIL));
 
         if (f == null) {
-            f = ResourceInfoFragment.newInstance(resource);
+
+            f = InformationFragment.newInstance();
+
         }
 
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

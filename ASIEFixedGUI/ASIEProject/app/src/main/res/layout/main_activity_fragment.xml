@@ -49,6 +49,7 @@
                     android:ems="10"
                     android:paddingLeft="10dp"
                     android:gravity="center_vertical"
+                    android:inputType="text"
 
                     />
             </LinearLayout>
@@ -60,6 +61,23 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_layer"/>
 
+
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:paddingTop="10dp"
+            app:itemIconTint="#FFFFFF"
+            app:itemTextColor="#FFFFFF"
+            app:menu="@menu/bottom_nav_menu"/>
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

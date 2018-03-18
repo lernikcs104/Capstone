@@ -1,13 +1,14 @@
 package asieproject.asie;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.ParcelableSparseArray;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,11 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,19 +34,19 @@ import asieproject.asie.Model.CategoryClass;
 import asieproject.asie.Model.ResourceClass;
 import asieproject.asie.Model.Singleton;
 import asieproject.asie.Model.VolleyCallback;
-import asieproject.asie.View.SubCategoryListAdapter;
+import asieproject.asie.View.SearchResultListAdapter;
 
 import static android.content.ContentValues.TAG;
 
 
+public class SearchResultFragment extends Fragment implements AdapterView.OnItemClickListener{
 
-public class SubCategoryFragment extends Fragment implements AdapterView.OnItemClickListener{
-
-    public static final String TAG = SubCategoryFragment.class.getSimpleName();
+    public static final String TAG = SearchResultFragment.class.getSimpleName();
     private ListView mListView;
-    List<CategoryClass> subcategoryRow;
-    SubCategoryListAdapter adapter;
+    List<ResourceClass> subcategoryRow;
+    SearchResultListAdapter adapter;
     private int mListPosition;
+    ArrayList<ResourceClass> searchResultList;
     VolleyCallback callback;
     database db;
     private TextView headerText;
@@ -52,12 +55,13 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
 
     private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     private final String  resourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
-    public SubCategoryFragment() {}
+    public SearchResultFragment() {}
 
-    public static SubCategoryFragment newInstance(int pos) {
+    public static SearchResultFragment newInstance( ArrayList<ResourceClass> searchResult) {
         Bundle bundle = new Bundle();
-        bundle.putInt(MainActivity.EXTRA_CATEGORY, pos);
-        SubCategoryFragment f = new SubCategoryFragment();
+        //bundle.putInt(MainActivity.EXTRA_CATEGORY, pos);
+        bundle.putSerializable(MainActivity.SEARCH_RESULT,  searchResult);
+        SearchResultFragment f = new SearchResultFragment();
         f.setArguments(bundle);
 
         return f;
@@ -67,14 +71,15 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mListPosition = bundle.getInt(MainActivity.EXTRA_CATEGORY);
+        //mListPosition = bundle.getInt(MainActivity.EXTRA_CATEGORY);
+        searchResultList = (ArrayList<ResourceClass>) bundle.getSerializable(MainActivity.SEARCH_RESULT);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.sub_category_fragment, container, false);
-        mListView = (ListView)v.findViewById(R.id.sub_category_list);
+        mListView = (ListView)v.findViewById(R.id.search_result);
         headerText = (TextView)v.findViewById(R.id.topText);
         backImage = (ImageView) v.findViewById(R.id.back_icon);
         bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
@@ -87,6 +92,7 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
             }
         });
 
+        /**
         // success call to category_to_resource db data
         callback = new VolleyCallback() {
             @Override
@@ -111,7 +117,7 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
             db = new database(getActivity().getApplication(), callback, categoryToResourceURL, 2);
             Singleton.get(getActivity().getApplicationContext()).SetCategoryToResourceFlag();
         }
-
+*/
         populateList();
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -161,7 +167,7 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         }
     };
 
-
+/*
     private void populateList() {
         ArrayList<CategoryClass> subCategoryList = new ArrayList<CategoryClass>();
         // get subcategories based on the category row clicked by the user
@@ -179,22 +185,42 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(this);
     }
+   */
+
+    private void populateList() {
+        ArrayList<ResourceClass> subCategoryList = searchResultList;
+        // get subcategories based on the category row clicked by the user
+        //subCategoryList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getSubCategoryList();
+        //resourceList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId);
+
+        subcategoryRow = new ArrayList<ResourceClass>();
+        // headerText.setText( Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getCategoryName());
+        // populate each row
+        for (int i=0; i<subCategoryList.size(); ++i) {
+            subcategoryRow.add(subCategoryList.get(i));
+        }
+
+        // populate the list view with category row
+        adapter = new SearchResultListAdapter(getActivity().getApplicationContext(), R.layout.search_result_item, subcategoryRow);
+        mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(this);
+    }
 
 
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-        ArrayList<CategoryClass> subcategoryList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getSubCategoryList();
-
-        Intent intent = new Intent(getActivity().getApplicationContext(), ResourceActivity.class);
-        intent.putExtra(MainActivity.EXTRA_RESOURCE, position);
-        intent.putExtra(MainActivity.EXTRA_SUBCATEGORY_ID, subcategoryList.get(position).getId());
-        intent.putExtra(MainActivity.EXTRA_CATEGORY, mListPosition);
-        intent.putExtra(MainActivity.EXTRA_HEADER,subcategoryList.get(position).getCategoryName());
-        Log.d(TAG, "....................... main header " + subcategoryList.get(position).getCategoryName());
-        getActivity().setResult(Activity.RESULT_OK, intent);
-        startActivity(intent);
+//        ArrayList<CategoryClass> subcategoryList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getSubCategoryList();
+//
+//        Intent intent = new Intent(getActivity().getApplicationContext(), ResourceActivity.class);
+//        intent.putExtra(MainActivity.EXTRA_RESOURCE, position);
+//        intent.putExtra(MainActivity.EXTRA_SUBCATEGORY_ID, subcategoryList.get(position).getId());
+//        intent.putExtra(MainActivity.EXTRA_CATEGORY, mListPosition);
+//        intent.putExtra(MainActivity.EXTRA_HEADER,subcategoryList.get(position).getCategoryName());
+//        Log.d(TAG, "....................... main header " + subcategoryList.get(position).getCategoryName());
+//        getActivity().setResult(Activity.RESULT_OK, intent);
+//        startActivity(intent);
     }
 
 }

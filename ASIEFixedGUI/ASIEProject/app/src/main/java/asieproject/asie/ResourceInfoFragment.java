@@ -6,12 +6,15 @@ import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,9 +32,6 @@ import asieproject.asie.Model.Singleton;
 import asieproject.asie.View.ResourceInfoListAdapter;
 import asieproject.asie.View.ResourceListAdapter;
 
-/**
- * Created by CACTUS on 3/1/2018.
- */
 
 public class ResourceInfoFragment extends Fragment {
 
@@ -46,6 +46,7 @@ public class ResourceInfoFragment extends Fragment {
     TextView descriptionTextView;
     TextView nameTextView;
     ImageView backImage;
+    BottomNavigationView bottomNavigationView;
 
     public ResourceInfoFragment() {}
 
@@ -82,6 +83,7 @@ public class ResourceInfoFragment extends Fragment {
 
         backImage = (ImageView) v.findViewById(R.id.back_icon);
 
+        bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
         //on clicking th back arrow it goes to previous page
         backImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,9 +194,53 @@ public class ResourceInfoFragment extends Fragment {
         });
 
 
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         return v;
     }
 
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
+
+            switch (item.getItemId()) {
+                case R.id.calendar:
+                    String url= "www.ieautism.org/events/";
+                    if(!url.contains("http://")){
+                        url= "http://"+url;
+                    }
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    try {
+                        startActivity(myIntent);
+                    } catch(Exception e){
+
+                        Log.d(TAG, "website", e);
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Item " + (2) + ": " + url,
+                                Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+                        toast.show();
+                    }
+                    return true;
+                case R.id.home:
+                    selectedFragment = MainActivityFragment.newInstance();
+                    //Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+//                    getActivity().setResult(Activity.RESULT_OK, intent);
+//                    startActivity(intent);
+                    android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_container, selectedFragment);
+                    transaction.commit();
+                    return true;
+                case R.id.info:
+                    Intent intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
 
 }

@@ -1,18 +1,19 @@
 package asieproject.asie;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import java.util.ArrayList;
 
 import asieproject.asie.Model.ResourceClass;
 
-
-public class ResourceInfoActivity extends FragmentActivity {
+public class SearchActivity extends FragmentActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,15 +21,19 @@ public class ResourceInfoActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         //Create fragment
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
         // get data from intent
         Intent intent = getIntent();
-        ResourceClass resource = ((ResourceClass)intent.getSerializableExtra(MainActivity.EXTRA_RESOURCE_DETAIL));
+
+        Bundle bundle = intent.getExtras();
+        ArrayList<ResourceClass> item  = (ArrayList<ResourceClass>) intent.getSerializableExtra(
+                "SEARCH_RESULT");
+        //ArrayList<ResourceClass> item  = (ArrayList<ResourceClass>) bundle.getSerializable("SEARCH_RESULT");
 
         if (f == null) {
-            f = ResourceInfoFragment.newInstance(resource);
+            f = SearchResultFragment.newInstance( item);
         }
 
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -41,7 +46,5 @@ public class ResourceInfoActivity extends FragmentActivity {
         setResult(Activity.RESULT_OK);
         finish();
     }
-
-
 
 }
