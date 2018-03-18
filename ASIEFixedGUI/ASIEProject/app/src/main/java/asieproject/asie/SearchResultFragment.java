@@ -52,15 +52,18 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
     private TextView headerText;
     private ImageView backImage;
     BottomNavigationView bottomNavigationView;
+    private String searchedItem;
+    ResourceClass mCurrentResource;
 
     private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     private final String  resourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
     public SearchResultFragment() {}
 
-    public static SearchResultFragment newInstance( ArrayList<ResourceClass> searchResult) {
+    public static SearchResultFragment newInstance( ArrayList<ResourceClass> searchResult, String searchedItem) {
         Bundle bundle = new Bundle();
-        //bundle.putInt(MainActivity.EXTRA_CATEGORY, pos);
+
         bundle.putSerializable(MainActivity.SEARCH_RESULT,  searchResult);
+        bundle.putString("SEARCHED_STRING", searchedItem);
         SearchResultFragment f = new SearchResultFragment();
         f.setArguments(bundle);
 
@@ -71,14 +74,14 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        //mListPosition = bundle.getInt(MainActivity.EXTRA_CATEGORY);
         searchResultList = (ArrayList<ResourceClass>) bundle.getSerializable(MainActivity.SEARCH_RESULT);
+        searchedItem = bundle.getString("SEARCHED_STRING");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.sub_category_fragment, container, false);
+        View v = inflater.inflate(R.layout.search_result_fragment, container, false);
         mListView = (ListView)v.findViewById(R.id.search_result);
         headerText = (TextView)v.findViewById(R.id.topText);
         backImage = (ImageView) v.findViewById(R.id.back_icon);
@@ -92,32 +95,6 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
             }
         });
 
-        /**
-        // success call to category_to_resource db data
-        callback = new VolleyCallback() {
-            @Override
-            public void onSuccess(ArrayList<CategoryClass> result) {}
-
-            @Override
-            public void onSuccess(Map<String, String> result) {
-
-                if (! Singleton.get(getActivity().getApplicationContext()).IsResourceSet()) {
-                    db = new database(getActivity().getApplication(), callback, resourceURL, 3);
-                    Singleton.get(getActivity().getApplicationContext()).SetResourceFlag();
-
-                }
-            }
-
-            @Override
-            public void onSuccessResource(ArrayList<ResourceClass> result) {}
-        };
-
-
-        if (! Singleton.get(getActivity().getApplicationContext()).IsResToCatSet()) {
-            db = new database(getActivity().getApplication(), callback, categoryToResourceURL, 2);
-            Singleton.get(getActivity().getApplicationContext()).SetCategoryToResourceFlag();
-        }
-*/
         populateList();
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -150,13 +127,10 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
                     }
                     return true;
                 case R.id.home:
-                    //selectedFragment = MainActivityFragment.newInstance();
-                    Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-                    getActivity().setResult(Activity.RESULT_OK, intent);
+                     Intent intent= new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-//                    android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                    transaction.replace(R.id.fragment_container, selectedFragment);
-//                    transaction.commit();
+
                     return true;
                 case R.id.info:
                      intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
@@ -167,40 +141,18 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
         }
     };
 
-/*
-    private void populateList() {
-        ArrayList<CategoryClass> subCategoryList = new ArrayList<CategoryClass>();
-        // get subcategories based on the category row clicked by the user
-        subCategoryList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getSubCategoryList();
-        subcategoryRow = new ArrayList<CategoryClass>();
-        headerText.setText( Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getCategoryName());
-
-//      populate each row
-        for (int i=0; i<subCategoryList.size(); ++i) {
-            subcategoryRow.add(subCategoryList.get(i));
-        }
-
-        // populate the list view with category row
-        adapter = new SubCategoryListAdapter(getActivity().getApplicationContext(), R.layout.subcategory_list_item, subcategoryRow);
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(this);
-    }
-   */
 
     private void populateList() {
         ArrayList<ResourceClass> subCategoryList = searchResultList;
-        // get subcategories based on the category row clicked by the user
-        //subCategoryList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getSubCategoryList();
-        //resourceList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId);
 
         subcategoryRow = new ArrayList<ResourceClass>();
-        // headerText.setText( Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getCategoryName());
+        headerText.setText(searchedItem);
         // populate each row
         for (int i=0; i<subCategoryList.size(); ++i) {
             subcategoryRow.add(subCategoryList.get(i));
         }
 
-        // populate the list view with category row
+        // populate the list view
         adapter = new SearchResultListAdapter(getActivity().getApplicationContext(), R.layout.search_result_item, subcategoryRow);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(this);
@@ -211,16 +163,14 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-//        ArrayList<CategoryClass> subcategoryList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getSubCategoryList();
-//
-//        Intent intent = new Intent(getActivity().getApplicationContext(), ResourceActivity.class);
-//        intent.putExtra(MainActivity.EXTRA_RESOURCE, position);
-//        intent.putExtra(MainActivity.EXTRA_SUBCATEGORY_ID, subcategoryList.get(position).getId());
-//        intent.putExtra(MainActivity.EXTRA_CATEGORY, mListPosition);
-//        intent.putExtra(MainActivity.EXTRA_HEADER,subcategoryList.get(position).getCategoryName());
-//        Log.d(TAG, "....................... main header " + subcategoryList.get(position).getCategoryName());
-//        getActivity().setResult(Activity.RESULT_OK, intent);
-//        startActivity(intent);
+
+        String resourceid = Singleton.get(getActivity().getApplicationContext()).GetResource().get(position+1).GetResourceId();
+
+        mCurrentResource = Singleton.get(getActivity().getApplicationContext()).GetResource().get(position);
+        Intent intent = new Intent(getActivity().getApplicationContext(), ResourceInfoActivity.class);
+        intent.putExtra(MainActivity.EXTRA_RESOURCE_DETAIL, (ResourceClass) mCurrentResource);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+        startActivity(intent);
     }
 
 }

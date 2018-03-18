@@ -144,16 +144,13 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
                     }
                     return true;
                 case R.id.home:
-                    //selectedFragment = MainActivityFragment.newInstance();
-                    Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-                    getActivity().setResult(Activity.RESULT_OK, intent);
-                    startActivity(intent);
-//                    android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                    transaction.replace(R.id.fragment_container, selectedFragment);
-//                    transaction.commit();
+
+                    Intent i= new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
                     return true;
                 case R.id.info:
-                     intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
+                     Intent intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
                     startActivity(intent);
                     return true;
             }

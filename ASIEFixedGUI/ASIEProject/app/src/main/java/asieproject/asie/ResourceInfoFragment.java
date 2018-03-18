@@ -226,16 +226,12 @@ public class ResourceInfoFragment extends Fragment {
                     }
                     return true;
                 case R.id.home:
-                    selectedFragment = MainActivityFragment.newInstance();
-                    //Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-//                    getActivity().setResult(Activity.RESULT_OK, intent);
-//                    startActivity(intent);
-                    android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container, selectedFragment);
-                    transaction.commit();
+                    Intent intent= new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     return true;
                 case R.id.info:
-                    Intent intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
+                     intent = new Intent(getActivity().getApplicationContext(), InformationActivity.class);
                     startActivity(intent);
                     return true;
             }

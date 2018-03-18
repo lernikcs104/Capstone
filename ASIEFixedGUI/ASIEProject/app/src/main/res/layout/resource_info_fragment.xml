@@ -3,14 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:scrollbarSize="@dimen/bottom_navigation_elevation">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true"
+            android:scrollbars = "vertical"
+            android:paddingBottom="60dp">
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:scrollbarSize="@dimen/bottom_navigation_elevation">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
@@ -225,10 +238,11 @@
             android:text="There is no Description for this link"/>
         </RelativeLayout>
 
+    </LinearLayout>
+    </ScrollView>
+
 
     </LinearLayout>
-
-    </ScrollView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -243,4 +257,5 @@
             app:itemTextColor="#FFFFFF"
             app:menu="@menu/bottom_nav_menu"/>
     </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

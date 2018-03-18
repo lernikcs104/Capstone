@@ -27,13 +27,13 @@ public class SearchActivity extends FragmentActivity{
         // get data from intent
         Intent intent = getIntent();
 
-        Bundle bundle = intent.getExtras();
+
         ArrayList<ResourceClass> item  = (ArrayList<ResourceClass>) intent.getSerializableExtra(
                 "SEARCH_RESULT");
-        //ArrayList<ResourceClass> item  = (ArrayList<ResourceClass>) bundle.getSerializable("SEARCH_RESULT");
+        String searchedItem = intent.getStringExtra("SEARCHED_STRING");
 
         if (f == null) {
-            f = SearchResultFragment.newInstance( item);
+            f = SearchResultFragment.newInstance( item, searchedItem);
         }
 
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

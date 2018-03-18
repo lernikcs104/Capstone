@@ -6,10 +6,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="InvalidId">
 
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:scrollbars = "vertical"
+        android:paddingBottom="50dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/my_toolbar"
@@ -33,21 +48,22 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/image"
                     android:src="@drawable/white_logo"
-                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
                     />
 
                 <EditText
                     android:id="@+id/myEditText"
                     style="@android:style/Widget.AutoCompleteTextView"
-                    android:layout_width="350dp"
+                    android:layout_width="340dp"
                     android:layout_height="35dp"
                     android:background="@drawable/edit_text_style"
                     android:drawableLeft="@drawable/search"
                     android:backgroundTint="#fce7e7"
-                    android:paddingTop="10dp"
+                    android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:ems="10"
+                    android:ems="15"
                     android:paddingLeft="10dp"
+                    android:textSize="17dp"
                     android:gravity="center_vertical"
                     android:inputType="text"
 
@@ -62,6 +78,8 @@
             android:layout_below="@+id/toolbar_layer"/>
 
 
+    </LinearLayout>
+    </ScrollView>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

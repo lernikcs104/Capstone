@@ -138,7 +138,6 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
 
-                    ////
                     Log.d("TEST RESPONSE", "Enter was pressed");
 
                     searchStr = searchEditText.getText().toString();
@@ -146,23 +145,20 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
                     ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
                     Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
-                    //Bundle bundle = new Bundle();
-                    //bundle.putSerializable("SEARCH_RESULT", searchResult);
+
                     intent.putExtra("SEARCH_RESULT",(Serializable)searchResult);
-                    //intent.putExtras(bundle);
+                    intent.putExtra("SEARCHED_STRING", searchStr);
+
                     startActivity(intent);
 
-                    Log.d(TAG, "###################################");
-                    for (int i = 0; i < searchResult.size(); ++i) {
-                        Log.d(TAG, "------------------------------ name: " + searchResult.get(i).GetResourceName());
-                    }
-                    Log.d(TAG, "###################################");
+
                 }
-                //
+
                     return true;
 
             }
         });
+
 
         return v;
     }
@@ -199,25 +195,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         public void afterTextChanged(Editable s) {
             String searchStr;
 
-            if (s.charAt(s.length() - 1) == '\n') {
-                Log.d("TEST RESPONSE", "Enter was pressed");
 
-                searchStr = searchEditText.getText().toString();
-                Log.d(TAG, "................. search word " + searchStr);
-
-                ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
-                Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("SEARCH_RESULT", searchResult);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-                Log.d(TAG, "###################################");
-                for (int i = 0; i < searchResult.size(); ++i) {
-                    Log.d(TAG, "------------------------------ name: " + searchResult.get(i).GetResourceName());
-                }
-                Log.d(TAG, "###################################");
-            }
         }
 
     };
@@ -306,6 +284,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         Intent intent = new Intent(getActivity().getApplicationContext(), SubCategoryActivity.class);
         intent.putExtra(MainActivity.EXTRA_CATEGORY, position);
         getActivity().setResult(Activity.RESULT_OK, intent);
+
         startActivity(intent);
     }
 }
