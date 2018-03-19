@@ -193,7 +193,6 @@ public class ResourceInfoFragment extends Fragment {
             }
         });
 
-
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         return v;
