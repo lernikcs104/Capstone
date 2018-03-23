@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
     List<CategoryClass> categoryRow;
     ListArrayAdapter adapter;
     private String rowItemString;
+    private Button donateBtn;
     private static final String categoryURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
     private static final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     private static final String resourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
@@ -90,7 +92,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
         listView = (ListView) v.findViewById((R.id.list));
         searchEditText = (EditText) v.findViewById(R.id.myEditText);
-        //searchEditText.addTextChangedListener(searchTextWatcher);
+        donateBtn = (Button) v.findViewById(R.id.donation);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -159,6 +161,27 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
             }
         });
 
+        donateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url= "www.ieautism.org/make-a-donation";
+                if(!url.contains("http://")){
+                    url= "http://"+url;
+                }
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                try {
+                    startActivity(myIntent);
+                } catch(Exception e){
+
+                    Log.d(TAG, "website", e);
+                    Toast toast = Toast.makeText(getActivity(),
+                            "Item " + (2) + ": " + url,
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toast.show();
+                }
+            }
+        });
 
         return v;
     }

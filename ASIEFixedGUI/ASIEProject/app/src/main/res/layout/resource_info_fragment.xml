@@ -16,7 +16,7 @@
             android:layout_height="fill_parent"
             android:fillViewport="true"
             android:scrollbars = "vertical"
-            android:paddingBottom="60dp">
+            android:paddingBottom="80dp">
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,32 +27,33 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:background="@color/colorAccent">
             <ImageView
                 android:id="@+id/back_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:contentDescription="@string/image"
                 android:foregroundGravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:src="@drawable/back"
                 />
 
             <TextView
                 android:id="@+id/topText"
                 android:layout_width="fill_parent"
-                android:layout_height="60dp"
+                android:layout_height="fill_parent"
                 android:background="@color/colorAccent"
                 android:textColor="#ffffff"
                 android:fontFamily="sans-serif"
                 android:textSize="22dp"
-                android:paddingTop="10dp"
-                android:gravity="center_horizontal"
+                android:foregroundGravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
                 android:textStyle="bold"
+                android:text="INFORMATION"
                 />
         </LinearLayout>
         <!--<ListView-->
@@ -61,10 +62,12 @@
             <!--android:layout_height="500dp"-->
             <!--android:layout_below="@+id/toolbar_layer"/>-->
 
+
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="130dp"
             >
+
 
         <ImageView
             android:id="@+id/icon"
@@ -113,7 +116,7 @@
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="130dp"
             >
         <ImageView
             android:id="@+id/icon1"
@@ -213,29 +216,32 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             >
-        <TextView
+            <TextView
 
-            android:id="@+id/destitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:paddingLeft="30dp"
-            android:paddingTop="10dp"
-            android:textColor="#CC0033"
-            android:textSize="25dp"
-            android:textStyle="bold"
-        />
+                android:id="@+id/destitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="10dp"
+                android:textColor="#CC0033"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                />
 
-        <TextView
-            android:id="@+id/res_info_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="30dp"
-            android:layout_below="@+id/destitle"
-            android:fontFamily="sans-serif"
-            android:textColor="#000203"
-            android:textSize="19dp"
-            android:text="There is no Description for this link"/>
+            <TextView
+                android:id="@+id/res_info_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_below="@+id/destitle"
+                android:fontFamily="sans-serif"
+                android:textColor="#000203"
+                android:textSize="19dp"
+                android:autoSizeTextType="uniform"
+                android:text="There is no Description for this link"/>
         </RelativeLayout>
 
     </LinearLayout>

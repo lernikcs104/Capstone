@@ -45,6 +45,7 @@ public class ResourceInfoFragment extends Fragment {
     TextView addressTextView;
     TextView descriptionTextView;
     TextView nameTextView;
+    TextView desTtitle;
     ImageView backImage;
     BottomNavigationView bottomNavigationView;
 
@@ -80,6 +81,7 @@ public class ResourceInfoFragment extends Fragment {
         addressTextView = (TextView) v.findViewById(R.id.res_info_address);
         descriptionTextView = (TextView) v.findViewById(R.id.res_info_description);
         nameTextView = (TextView) v.findViewById(R.id.topText);
+        desTtitle  = (TextView) v.findViewById(R.id.destitle);
 
         backImage = (ImageView) v.findViewById(R.id.back_icon);
 
@@ -94,31 +96,31 @@ public class ResourceInfoFragment extends Fragment {
         });
 
         if (!mResource.GetResourceName().isEmpty() ) {
-            nameTextView.setText(mResource.GetResourceName());
+            desTtitle.setText(mResource.GetResourceName());
         }else{
-            nameTextView.setText("There is no info");
+            desTtitle.setText("No information available!");
         }
         if (!mResource.GetResourcePhone().isEmpty()) {
             phoneTextView.setText(mResource.GetResourcePhone());
         }else{
-            phoneTextView.setText("There is no Phone# in this link");
+            phoneTextView.setText("No phone number is available!");
         }
         if (!mResource.GetResourceWebsite().isEmpty()){
             webTextView.setText(mResource.GetResourceWebsite());
         }
         else{
-            webTextView.setText("No website link specified");
+            webTextView.setText("No website link specified!");
         }
         if(!mResource.GetResourceAddress().isEmpty()) {
             addressTextView.setText(mResource.GetResourceAddress());
         }else{
-            addressTextView.setText("There is no Address Specified");
+            addressTextView.setText("No address specified");
         }
         if(!mResource.GetResourceDescription().isEmpty()) {
-            descriptionTextView.setText(mResource.GetResourceDescription());
+            descriptionTextView.setText(mResource.GetResourceDescription()+"\n\n\n\n");
         }else
         {
-            descriptionTextView.setText("There is no Description for this link");
+            descriptionTextView.setText("No description provided for this link");
         }
 
         //clicking on the phone for calling

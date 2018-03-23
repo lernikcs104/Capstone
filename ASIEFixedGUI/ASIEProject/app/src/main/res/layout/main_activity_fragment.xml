@@ -58,19 +58,40 @@
                     android:layout_height="35dp"
                     android:background="@drawable/edit_text_style"
                     android:drawableLeft="@drawable/search"
-                    android:backgroundTint="#fce7e7"
+                    android:gravity="center_vertical"
+                    android:backgroundTint="#dcdada"
                     android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:ems="15"
-                    android:paddingLeft="10dp"
                     android:textSize="17dp"
-                    android:gravity="center_vertical"
-                    android:inputType="text"
+                    android:inputType="textNoSuggestions"
+                    android:foregroundGravity="center_vertical"
+                    android:drawingCacheQuality="high"
+                    android:hint="@string/search"
+
 
                     />
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:background="#c2d4dc"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/donation"
+                android:layout_width="400dp"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:text="Click Here To Make a Donation to ASIE!"
+                android:drawableStart="@drawable/pinkhearticon"/>
+
+        </LinearLayout>
+
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
@@ -95,6 +116,8 @@
             app:itemIconTint="#FFFFFF"
             app:itemTextColor="#FFFFFF"
             app:menu="@menu/bottom_nav_menu"/>
+
+
 
     </RelativeLayout>
 

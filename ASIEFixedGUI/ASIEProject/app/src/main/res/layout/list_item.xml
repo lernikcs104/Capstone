@@ -15,20 +15,20 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:paddingBottom="10dp"
-            android:textColor="#CC0033"
-            android:textSize="16dp" />
+        <!--<TextView-->
+            <!--android:id="@+id/title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@+id/icon"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:textColor="#CC0033"-->
+            <!--android:textSize="16dp" />-->
 
         <TextView
             android:id="@+id/desc"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
+            android:layout_height="match_parent"
+           android:gravity="center_vertical"
             android:layout_toRightOf="@+id/icon"
             android:paddingLeft="10dp"
             android:textColor="#000203"
