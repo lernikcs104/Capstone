@@ -1,12 +1,15 @@
 package asieproject.asie;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -72,21 +75,16 @@ public class InformationFragment extends Fragment {
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                try
-                {
-                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone.getText())));
+                if( (getContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE){
 
-                }
-                catch(Exception e)
-                {
-                    Log.d(TAG, "caller: ", e);
-                    Toast toast = Toast.makeText(getActivity(),
-                            "Item " + (1) + ": " + phone,
-                            Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-                    toast.show();
+                }else{
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:"+ phone.getText().toString()));
 
+                    startActivity(callIntent);
                 }
+
+
             }
         });
         //clicking on the website

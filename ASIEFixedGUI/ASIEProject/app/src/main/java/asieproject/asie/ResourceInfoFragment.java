@@ -3,6 +3,7 @@ package asieproject.asie;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
@@ -128,21 +129,15 @@ public class ResourceInfoFragment extends Fragment {
             @Override
             public void onClick(View v){
 
-                try
-                {
-                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mResource.GetResourcePhone())));
+                if( (getContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE){
 
-                }
-                catch(Exception e)
-                {
-                    Log.d(TAG, "caller: ", e);
-                    Toast toast = Toast.makeText(getActivity(),
-                            "Item " + (1) + ": " + phoneTextView,
-                            Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-                    toast.show();
+                }else{
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:"+ mResource.GetResourcePhone().toString().toString()));
 
+                    startActivity(callIntent);
                 }
+                  
             }
         });
 
