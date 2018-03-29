@@ -18,6 +18,7 @@ public class CategoryClass implements Serializable {
     private final static String TAG = CategoryClass.class.getSimpleName();
     private String mCategoryId;
     private String mCategoryParentId;
+    private String mCategoryParentName;
     private String mCategoryName;
     private Integer mCategoryImage;
     private ArrayList<CategoryClass> mSubCategoryList;
@@ -28,11 +29,12 @@ public class CategoryClass implements Serializable {
         super();
     }
 
-    public CategoryClass(String id, String parentId, String name, Integer image) {
+    public CategoryClass(String id, String parentId, String parentName, String name, Integer image) {
         super();
         this.mCategoryId = id;
         this.mCategoryName = name;
         this.mCategoryParentId = parentId;
+        this.mCategoryParentName = parentName;
         this.mCategoryImage = image;
         mSubCategoryList = new ArrayList<CategoryClass>();
         mResourceMap = new HashMap<String, ArrayList<ResourceClass>>();

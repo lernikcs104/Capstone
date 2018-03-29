@@ -40,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -185,57 +186,64 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
         return v;
     }
-/*
-    private final TextWatcher searchTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            String searchStr;
-//            if (count > 0) {
-//                searchStr = searchEditText.getText().toString();
-//                Log.d(TAG, "................. search word " + searchStr);
-//
-//                ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
-//                Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("SEARCH_RESULT", searchResult);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//
-//                Log.d(TAG, "###################################");
-//                for (int i=0; i<searchResult.size(); ++i) {
-//                    Log.d(TAG,"------------------------------ name: " + searchResult.get(i).GetResourceName());
-//                }
-//                Log.d(TAG, "###################################");
-//            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String searchStr;
-
-
-        }
-
-    };
-    */
 
     private ArrayList<ResourceClass> SearchResource(String searchKeyword) {
         ArrayList<ResourceClass> result = new ArrayList<ResourceClass>();
         ArrayList<ResourceClass> resourceList = Singleton.get(getActivity().getApplicationContext()).GetResource();
-        for (int i=0; i<resourceList.size(); ++i) {
-            if (searchKeyword.toLowerCase().equals("doctor")) {
-                searchKeyword = "dr";
+
+        // search by subcategory
+        if (isSubcategoryName(searchKeyword)) {
+            CategoryClass subcat = GetSubcat (searchKeyword);
+            if (subcat != null) {
+                int mainCategoryIndex = GetMainCatIndex(subcat.getParentId());
+
+                result = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(subcat.getId());
+                result.remove(0);
             }
-            if (resourceList.get(i).GetResourceName().toLowerCase().contains(searchKeyword.toLowerCase())) {
-                result.add(resourceList.get(i));
+        } else {
+            // search by name
+            for (int i=0; i<resourceList.size(); ++i) {
+                if (searchKeyword.toLowerCase().equals("doctor")) {
+                    searchKeyword = "dr";
+                }
+                if (resourceList.get(i).GetResourceName().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                    result.add(resourceList.get(i));
+                }
             }
         }
         return result;
+    }
+
+    boolean isSubcategoryName(String searchKeyword) {
+        ArrayList<CategoryClass> subcat = Singleton.get(getActivity().getApplicationContext()).GetSubCategory();
+        for (int i=0; i<subcat.size(); ++i) {
+            if (subcat.get(i).getCategoryName().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // return sub category index
+    private CategoryClass GetSubcat (String searchKeyword) {
+        ArrayList<CategoryClass> subcat = Singleton.get(getActivity().getApplicationContext()).GetSubCategory();
+        for (int i=0; i<subcat.size(); ++i) {
+            if (subcat.get(i).getCategoryName().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                return subcat.get(i);
+            }
+        }
+        return null;
+    }
+
+    // return main category index
+    private int GetMainCatIndex(String maincatid) {
+        ArrayList<CategoryClass> mainCat = Singleton.get(getActivity().getApplicationContext()).GetCategory();
+        for (int i=0; i<mainCat.size(); ++i) {
+            if (maincatid.equals(mainCat.get(i).getId())) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

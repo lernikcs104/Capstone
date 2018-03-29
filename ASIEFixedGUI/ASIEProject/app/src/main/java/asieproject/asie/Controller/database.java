@@ -125,11 +125,12 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                     String id =  mJsonObjectVector.elementAt(i).getString("_id").substring(9, 33);
                     String name = mJsonObjectVector.elementAt(i).getString("name");
                     String parent_id = mJsonObjectVector.elementAt(i).getString("parent_id");
+                    String parent_name = GetParentName(parent_id);
 
                     // adding main category and sub category to their corresponding lists
                     CategoryClass c;
                     if (parent_id.length() == 0) {
-                        c = new CategoryClass(id, parent_id, name, mCategoryImages[i]);
+                        c = new CategoryClass(id, parent_id, parent_name, name, mCategoryImages[i]);
                         Singleton.get(mContext).AddCategory(c);
                     } else {
                         c = new CategoryClass(id, parent_id, name);
@@ -172,6 +173,17 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
         }
     }
 
+    // get main category name
+    private String GetParentName(String parent_id) {
+        ArrayList<CategoryClass> mainCat = Singleton.get(mContext).GetCategory();
+        for (int j=0; j<mainCat.size(); ++j) {
+            if (parent_id.equals(mainCat.get(j).getParentId())) {
+                return mainCat.get(j).getCategoryName();
+            }
+        }
+        return " ";
+    }
+
     // to assign each subcategory to its parent category
     private void AssignSubCategory(ArrayList<CategoryClass> subCatList) {
         for (int i=0; i<subCatList.size(); ++i) {
@@ -189,10 +201,8 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
 //        Log.d(TAG, "********************** main cat id " +  Singleton.get(mContext).GetSubcategoryToCategoryMap().get("59d6b4dd3fdf2e4bed10fcc1"));
     }
 
+    // assign each resource to subcategories
     private void AssignResource(ArrayList<ResourceClass> resourceList) {
-//
-//        Log.d(TAG, "********************** size of map " +  Singleton.get(mContext).GetCategoryToResourceMap().size());
-//        Log.d(TAG, "********************** size of list " +  resourceList.size());
 
         int count = 0;
         for (int i = 0; i < resourceList.size(); ++i) {
@@ -200,13 +210,10 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
             String subcat_id = Singleton.get(mContext).GetCategoryToResourceMap().get(resourceList.get(i).GetResourceId());
             // get main category id using subcategory_to_category map
             String maincat_id = Singleton.get(mContext).GetSubcategoryToCategoryMap().get(subcat_id);
-//            Log.d(TAG, "..................... category id = " + subcat_id );
-//            Log.d(TAG, "..................... maincat_id = " + maincat_id );
-//
-//            Log.d(TAG, "......... index = " + i);
+
             for (int j = 0; j < Singleton.get(mContext).GetCategory().size(); ++j) {
                 String mainCatId = Singleton.get(mContext).GetCategory().get(j).getId();
-//                Log.d(TAG, "........ id = " + Singleton.get(mContext).GetCategory().get(j).getId());
+
                 if (maincat_id != null) {
 
                     // TODO: check which resource is null
@@ -214,7 +221,10 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                         String subcat_name = "" ;
                         for (int x = 0; x < Singleton.get(mContext).GetSubCategory().size(); ++ x) {
                             if (subcat_id.equals( Singleton.get(mContext).GetSubCategory().get(x).getId())) {
+                                // get subcategory name for this resource and store it as this resource subcategory
+                                // which is going to be used for search functionality
                                 subcat_name = Singleton.get(mContext).GetSubCategory().get(x).getCategoryName();
+                                resourceList.get(i).SetSubcategory(subcat_name);
 //                                Log.d(TAG, " name " + Singleton.get(mContext).GetSubCategory().get(x).getCategoryName());
                             }
                         }

@@ -19,6 +19,7 @@ public class ResourceClass implements Serializable {
     private String mResourceDescription;
     private String mSubcategoryId;
     private String mMainCategoryId;
+    private String mSubcategory;
 
     public ResourceClass() {
         super();
@@ -35,6 +36,10 @@ public class ResourceClass implements Serializable {
         this.mResourceDescription = desc;
     }
 
+    public void SetSubcategory(String subcat) {
+        mSubcategory = subcat;
+    }
+
     public String GetResourceId() { return mResourceId; }
     public String GetResourceName() {
         return mResourceName;
@@ -48,7 +53,7 @@ public class ResourceClass implements Serializable {
     }
     public String GetResourceWebsite() { return mResourceWeb; }
     public String GetResourceDescription() { return mResourceDescription; }
-
+    public String GetSubcategory() { return mSubcategory; }
 
     public String getSubcategoryId() {return mSubcategoryId;}
     public String getmMainCategoryId() {return mMainCategoryId;}
