@@ -37,6 +37,7 @@
             android:layout_toRightOf="@+id/icon"
             android:fontFamily="sans-serif"
             android:paddingLeft="10dp"
+            android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:textColor="#000203"
             android:textSize="19dp" />

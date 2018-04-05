@@ -150,7 +150,7 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         resourceList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId);
         mResourceRow = new ArrayList<ResourceClass>();
        // headerText.setText(Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId).get(mListPosition).GetResourceName());
-        headerText.setText(header);
+        headerText.setText(" "+header+"     ");
 //     populate each row
 
 

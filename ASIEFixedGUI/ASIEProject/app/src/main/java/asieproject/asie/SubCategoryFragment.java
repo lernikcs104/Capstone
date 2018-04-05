@@ -164,7 +164,7 @@ public class SubCategoryFragment extends Fragment implements AdapterView.OnItemC
         // get subcategories based on the category row clicked by the user
         subCategoryList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getSubCategoryList();
         subcategoryRow = new ArrayList<CategoryClass>();
-        headerText.setText( Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getCategoryName());
+        headerText.setText( " "+Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mListPosition).getCategoryName()+"     ");
 
 //      populate each row
         for (int i=0; i<subCategoryList.size(); ++i) {

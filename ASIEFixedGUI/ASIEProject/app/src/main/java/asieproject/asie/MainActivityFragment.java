@@ -66,7 +66,8 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
     List<CategoryClass> categoryRow;
     ListArrayAdapter adapter;
     private String rowItemString;
-    private Button donateBtn;
+   // private Button donateBtn;
+    private TextView donateBtn;
     private static final String categoryURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/categories";
     private static final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     private static final String resourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
@@ -94,6 +95,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         listView = (ListView) v.findViewById((R.id.list));
         searchEditText = (EditText) v.findViewById(R.id.myEditText);
         donateBtn = (Button) v.findViewById(R.id.donation);
+        //donateBtn = (TextView) v.findViewById(R.id.donation);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -145,7 +147,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
 
                     searchStr = searchEditText.getText().toString();
                     Log.d(TAG, "................. search word " + searchStr);
-
+                    searchEditText.setText("");
                     ArrayList<ResourceClass> searchResult = SearchResource(searchStr);
                     Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
 

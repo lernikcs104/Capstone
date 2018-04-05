@@ -24,6 +24,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
+
         >
 
         <android.support.v7.widget.Toolbar
@@ -38,51 +39,77 @@
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="130dp"
-                android:gravity="center_vertical|center_horizontal|bottom"
+                android:layout_height="150dp"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/logo"
-                    android:layout_width="350dp"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
+                    android:maxHeight="30dp"
                     android:contentDescription="@string/image"
                     android:src="@drawable/white_logo"
-                    android:paddingTop="5dp"
-                    />
 
-                <EditText
-                    android:id="@+id/myEditText"
-                    style="@android:style/Widget.AutoCompleteTextView"
-                    android:layout_width="340dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/edit_text_style"
-                    android:drawableLeft="@drawable/search"
-                    android:gravity="center_vertical"
-                    android:backgroundTint="#dcdada"
-                    android:paddingTop="8dp"
-                    android:singleLine="true"
-                    android:textSize="17dp"
-                    android:inputType="textNoSuggestions"
-                    android:foregroundGravity="center_vertical"
-                    android:drawingCacheQuality="high"
-                    android:hint="@string/search"
+                     />
 
 
-                    />
+                <!--<LinearLayout-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:paddingBottom="10dp"-->
+                    <!--android:gravity="center">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/donation"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="40dp"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:textColor="#165293"-->
+                        <!--android:fontFamily="sans-serif"-->
+                        <!--android:textSize="25dp"-->
+                        <!--android:paddingBottom="5dp"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:text="CLICK HERE TO DONATE Clicl cclickclickclick"-->
+
+                        <!--/>-->
+                <!--</LinearLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/myEditText"
+                        style="@android:style/Widget.AutoCompleteTextView"
+                        android:layout_width="350dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/edit_text_style"
+                        android:drawableLeft="@drawable/search"
+                        android:backgroundTint="#dcdada"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:paddingBottom="10dp"
+                        android:inputType="textNoSuggestions"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:ems="20"
+                        android:hint="@string/search"/>
+
+                </LinearLayout>
             </LinearLayout>
 
-        </android.support.v7.widget.Toolbar>
+            </android.support.v7.widget.Toolbar>
 
-        <LinearLayout
+            <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="80dp"
-            android:background="#c2d4dc"
+            android:background="#a4dcf4"
             android:gravity="center">
 
             <Button
                 android:id="@+id/donation"
-                android:layout_width="350dp"
+                android:layout_width="330dp"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"

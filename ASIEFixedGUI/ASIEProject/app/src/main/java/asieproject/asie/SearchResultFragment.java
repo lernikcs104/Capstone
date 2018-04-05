@@ -47,6 +47,7 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
     BottomNavigationView bottomNavigationView;
     private String searchedItem;
     ResourceClass mCurrentResource;
+    public TextView noResult;
 
     private final String categoryToResourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/category_to_resource";
     private final String  resourceURL = "http://www.ieautism.org:81/mobileappdata/db/Children/expArr/resources";
@@ -79,6 +80,8 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
         headerText = (TextView)v.findViewById(R.id.topText);
         backImage = (ImageView) v.findViewById(R.id.back_icon);
         bottomNavigationView = (BottomNavigationView) v.findViewById(R.id.navigation);
+        noResult = (TextView) v.findViewById(R.id.noresult) ;
+
         //on clicking th back arrow it goes to previous page
         backImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,19 +139,23 @@ public class SearchResultFragment extends Fragment implements AdapterView.OnItem
 
 
     private void populateList() {
-        ArrayList<ResourceClass> subCategoryList = searchResultList;
 
         resourceRow = new ArrayList<ResourceClass>();
-        headerText.setText(searchedItem);
-        // populate each row
-        for (int i=0; i<searchResultList.size(); ++i) {
-            resourceRow.add(searchResultList.get(i));
-        }
+        headerText.setText("  "+searchedItem+"     ");
+        if(searchResultList.size()==0){
+            noResult.setText("No result Found");
+        }else {
+            // populate each row
 
-        // populate the list view
-        adapter = new SearchResultListAdapter(getActivity().getApplicationContext(), R.layout.search_result_item, resourceRow);
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(this);
+            for (int i = 0; i < searchResultList.size(); ++i) {
+                resourceRow.add(searchResultList.get(i));
+            }
+
+            // populate the list view
+            adapter = new SearchResultListAdapter(getActivity().getApplicationContext(), R.layout.search_result_item, resourceRow);
+            mListView.setAdapter(adapter);
+            mListView.setOnItemClickListener(this);
+        }
     }
 
     @Override

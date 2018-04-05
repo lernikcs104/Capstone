@@ -3,6 +3,7 @@
     <string name="connect">Connect</string>
     <string name="name">ListViewBaseAdapter</string>
     <string name="image">Thumbnail</string>
-    <string name="search">search</string>
+    <string name="search">  Search</string>
     <string name="action_settings">action search</string>
+    <string name="phoneNum"><u>1-951-220-6922</u></string>
 </resources>

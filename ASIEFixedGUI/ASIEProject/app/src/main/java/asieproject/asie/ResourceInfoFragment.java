@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -99,23 +100,25 @@ public class ResourceInfoFragment extends Fragment {
         if (!mResource.GetResourceName().isEmpty() ) {
             desTtitle.setText(mResource.GetResourceName());
         }else{
-            desTtitle.setText("No information available!");
+            desTtitle.setText("No information available");
         }
         if (!mResource.GetResourcePhone().isEmpty()) {
-            phoneTextView.setText(mResource.GetResourcePhone());
+            String htmlString="<u>"+mResource.GetResourcePhone()+"</u>";
+            phoneTextView.setText(Html.fromHtml(htmlString));
+           // phoneTextView.setText("<u>"+mResource.GetResourcePhone()+"</u>");
         }else{
-            phoneTextView.setText("No phone number is available!");
+            phoneTextView.setText("No phone number available");
         }
         if (!mResource.GetResourceWebsite().isEmpty()){
             webTextView.setText(mResource.GetResourceWebsite());
         }
         else{
-            webTextView.setText("No website link specified!");
+            webTextView.setText("No website link available");
         }
         if(!mResource.GetResourceAddress().isEmpty()) {
             addressTextView.setText(mResource.GetResourceAddress());
         }else{
-            addressTextView.setText("No address specified");
+            addressTextView.setText("No address available");
         }
         if(!mResource.GetResourceDescription().isEmpty()) {
             descriptionTextView.setText(mResource.GetResourceDescription()+"\n\n\n\n");

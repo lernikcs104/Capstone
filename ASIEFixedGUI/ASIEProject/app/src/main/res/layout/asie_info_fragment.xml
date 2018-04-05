@@ -32,8 +32,8 @@
                         android:background="@color/colorAccent">
                         <ImageView
                             android:id="@+id/back_icon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:contentDescription="@string/image"
                             android:foregroundGravity="center_vertical"
                             android:paddingLeft="10dp"
@@ -52,7 +52,7 @@
                             android:layout_gravity="center_vertical"
                             android:gravity="center"
                             android:textStyle="bold"
-                            android:text="INFORMATION"
+                            android:text="INFORMATION    "
                             />
                     </LinearLayout>
 
@@ -97,9 +97,10 @@
                     android:fontFamily="sans-serif"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
+                    android:paddingRight="20dp"
                     android:textColor="#000203"
                     android:textSize="19dp"
-                    android:text="1-951-220-6922"/>
+                    android:text="@string/phoneNum"/>
             </RelativeLayout>
 
             <View
@@ -145,6 +146,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
+                    android:paddingRight="20dp"
                     android:textColor="#000203"
                     android:textSize="19dp"
                     android:text="www.ieautism.org"/>
@@ -193,6 +195,7 @@
                     android:layout_toRightOf="@+id/icon2"
                     android:fontFamily="sans-serif"
                     android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
                     android:paddingTop="10dp"
                     android:textColor="#000203"
                     android:textSize="19dp"
@@ -242,6 +245,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
+                    android:paddingRight="20dp"
                     android:textColor="#000203"
                     android:textSize="19dp"
                     android:text="www.ieautism.org/make-a-donation"/>
