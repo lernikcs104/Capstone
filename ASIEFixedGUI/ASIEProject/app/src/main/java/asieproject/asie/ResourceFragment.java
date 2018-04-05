@@ -148,7 +148,6 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
         ArrayList<ResourceClass> resourceList = new ArrayList<ResourceClass>();
         // get subcategories based on the category row clicked by the user
         resourceList = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId);
-//        Log.d(TAG, "!!!!!!!!!!!!!! size " + resourceList.size());
         mResourceRow = new ArrayList<ResourceClass>();
        // headerText.setText(Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId).get(mListPosition).GetResourceName());
         headerText.setText(header);
@@ -157,7 +156,6 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
 
         for (int i=1; i<resourceList.size(); ++i) {
             mResourceRow.add(resourceList.get(i));
-
         }
 
 //        // populate the list view with category row
@@ -170,7 +168,6 @@ public class ResourceFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         mCurrentResource = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(mSubcategoryId).get(position + 1);
-//        Log.d(TAG, "...................... NAME NAME NAME " + mCurrentResource.GetResourceName());
 
         Intent intent = new Intent(getActivity().getApplicationContext(), ResourceInfoActivity.class);
         intent.putExtra(MainActivity.EXTRA_RESOURCE_DETAIL, (ResourceClass) mCurrentResource);

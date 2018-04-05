@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +96,6 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         //if you got no data back from the server, handle it somehow.
-
                     }
                 })
         {
@@ -191,14 +191,11 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
                 if (subCatList.get(i).getParentId().equals(Singleton.get(mContext).GetCategory().get(j).getId())) {
                     Singleton.get(mContext).GetCategory().get(j).addSubCategory(subCatList.get(i));
                     Singleton.get(mContext).SetSubcatToCategoryMap(subCatList.get(i).getId(), Singleton.get(mContext).GetCategory().get(j).getId());
+
                     break;
                 }
             }
         }
-
-//        Log.d(TAG, "********************* size of list " + subCatList.size());
-//        Log.d(TAG, "********************** size of map " +  Singleton.get(mContext).GetSubcategoryToCategoryMap().size());
-//        Log.d(TAG, "********************** main cat id " +  Singleton.get(mContext).GetSubcategoryToCategoryMap().get("59d6b4dd3fdf2e4bed10fcc1"));
     }
 
     // assign each resource to subcategories
@@ -211,43 +208,42 @@ public class database {//extends AsyncTask<Object, Void, JSONObject> {
             // get main category id using subcategory_to_category map
             String maincat_id = Singleton.get(mContext).GetSubcategoryToCategoryMap().get(subcat_id);
 
+            // iterate through the main cateogries
             for (int j = 0; j < Singleton.get(mContext).GetCategory().size(); ++j) {
                 String mainCatId = Singleton.get(mContext).GetCategory().get(j).getId();
 
                 if (maincat_id != null) {
 
-                    // TODO: check which resource is null
                     if (maincat_id.equals(mainCatId)) {
-                        String subcat_name = "" ;
+                        String subcat_name;
+                        // iterate through the main category's subcategories
                         for (int x = 0; x < Singleton.get(mContext).GetSubCategory().size(); ++ x) {
                             if (subcat_id.equals( Singleton.get(mContext).GetSubCategory().get(x).getId())) {
                                 // get subcategory name for this resource and store it as this resource subcategory
                                 // which is going to be used for search functionality
                                 subcat_name = Singleton.get(mContext).GetSubCategory().get(x).getCategoryName();
                                 resourceList.get(i).SetSubcategory(subcat_name);
-//                                Log.d(TAG, " name " + Singleton.get(mContext).GetSubCategory().get(x).getCategoryName());
                             }
                         }
-//                        Log.d(TAG, "..res " + resourceList.get(i).GetResourceName() + " .. sc " + subcat_name + ".. c" + Singleton.get(mContext).GetCategory().get(j).getCategoryName());
+
                         CategoryClass mainCategory = Singleton.get(mContext).GetCategory().get(j);
                         mainCategory.addResourceToSubcategory(subcat_id, resourceList.get(i));
+
+                        // ################### Latest Addition ##################################
+                        // these 3 resources are belong to 2 subcategories but only have 1 parent_id
+                        if (resourceList.get(i).GetResourceName().equals("Academy of the Inland Empire") ||
+                                resourceList.get(i).GetResourceName().equals("Dehesa Charter School") ||
+                                resourceList.get(i).GetResourceName().equals("River Springs Charter School")) {
+                            mainCategory.addResourceToSubcategory("59d6bb1b3fdf2e4c4f32a8c0", resourceList.get(i));
+
+                        }
+                        // #######################################################################
+                        
                         ++count;
                         break;
-//                        Log.d(TAG, "-------------------------- category name = " + Singleton.get(mContext).GetCategory().get(j).getCategoryName());
                     }
-                } else {
-//                    Log.d(TAG, "########################################");
-//                    Log.d(TAG, "resource name " + resourceList.get(i).GetResourceName());
-//                    for (int x = 0; x < Singleton.get(mContext).GetSubCategory().size(); ++ x) {
-//                        if (subcat_id.equals( Singleton.get(mContext).GetSubCategory().get(x).getId())) {
-//                            Log.d(TAG, " name " + Singleton.get(mContext).GetSubCategory().get(x).getCategoryName());
-//                        }
-//                    }
-
                 }
             }
-
-//            Log.d(TAG, ".............. resources taht are stored = " + count);
         }
 
 //        for (int i = 0; i < Singleton.get(mContext).GetCategory().size(); ++i) {

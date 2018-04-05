@@ -74,7 +74,6 @@ public class CategoryClass implements Serializable {
     }
 
     public void addResourceToSubcategory(String key, ResourceClass r) {
-
         mResourceMap.get(key).add(r);
     }
 

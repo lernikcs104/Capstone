@@ -153,10 +153,7 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
                     intent.putExtra("SEARCHED_STRING", searchStr);
 
                     startActivity(intent);
-
-
                 }
-
                     return true;
 
             }
@@ -191,8 +188,19 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
         ArrayList<ResourceClass> result = new ArrayList<ResourceClass>();
         ArrayList<ResourceClass> resourceList = Singleton.get(getActivity().getApplicationContext()).GetResource();
 
+        // ################### Latest Addition ##################################
+        if (searchKeyword.toLowerCase().equals("doctor")) {
+            searchKeyword = "dr";
+        }
+        // search by name
+        for (int i=0; i<resourceList.size(); ++i) {
+            if (resourceList.get(i).GetResourceName().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                result.add(resourceList.get(i));
+            }
+        }
+
         // search by subcategory
-        if (isSubcategoryName(searchKeyword)) {
+        if (isSubcategoryName(searchKeyword) && ! searchKeyword.equals("dr")) {
             CategoryClass subcat = GetSubcat (searchKeyword);
             if (subcat != null) {
                 int mainCategoryIndex = GetMainCatIndex(subcat.getParentId());
@@ -200,17 +208,9 @@ public class MainActivityFragment extends Fragment implements AdapterView.OnItem
                 result = Singleton.get(getActivity().getApplicationContext()).GetCategory().get(mainCategoryIndex).GetResourceMap().get(subcat.getId());
                 result.remove(0);
             }
-        } else {
-            // search by name
-            for (int i=0; i<resourceList.size(); ++i) {
-                if (searchKeyword.toLowerCase().equals("doctor")) {
-                    searchKeyword = "dr";
-                }
-                if (resourceList.get(i).GetResourceName().toLowerCase().contains(searchKeyword.toLowerCase())) {
-                    result.add(resourceList.get(i));
-                }
-            }
         }
+        // ######################################################################
+
         return result;
     }
 
